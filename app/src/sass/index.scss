@@ -57,3 +57,22 @@ body {
     font-family: 'Manrope', sans-serif;
   }
 }
+
+main {
+  display: flex;
+  height: calc(100vh - 70px); // assuming header is 60px tall
+
+  aside {
+    width: 275px;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 45px 50px;
+  }
+
+  .mainContent {
+    // background-color: #ddd;
+    width: calc(100% - 275px);
+    padding: 45px 50px;
+    overflow: auto;
+  }
+}
