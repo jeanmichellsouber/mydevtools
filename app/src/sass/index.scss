@@ -51,26 +51,80 @@ body {
   background-color: #f4f4f4;
   margin: 0;
   font-family: 'Manrope', sans-serif;
+  font-size: 17px;
 
   * {
     box-sizing: border-box;
     font-family: 'Manrope', sans-serif;
+    max-width: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 10px 0;
+  letter-spacing: -0.75px;
+  font-weight: bolder;
+  font-size: 34px;
+  background: linear-gradient(90deg, #13320c, #195f72);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+p {
+  margin: 0 0 5px 0;
+  font-weight: normal;
+}
+
+nav {
+  font-size: 18px;
+  font-weight: bold;
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    li {
+      a {
+        color: #13320c;
+        display: inline-block;
+        padding: 5px 10px;
+        &:before {
+          content: '//';
+          color: #195f72;
+          opacity: 0.5;
+          margin: 0 10px 0 0;
+        }
+        &:hover {
+          background: linear-gradient(90deg, #9cebed, #c7ffbc);
+        }
+      }
+    }
   }
 }
 
 main {
   display: flex;
-  height: calc(100vh - 70px); // assuming header is 60px tall
+  height: calc(100vh - 70px);
 
   aside {
     width: 275px;
     background-color: #ffffff;
-    border-right: 1px solid #e0e0e0;
-    padding: 45px 50px;
+    border-right: 1px solid #c0c0c0;
+    padding: 45px 30px;
   }
 
   .mainContent {
-    // background-color: #ddd;
+    background-color: #f4f4f4;
     width: calc(100% - 275px);
     padding: 45px 50px;
     overflow: auto;
