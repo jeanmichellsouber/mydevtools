@@ -105,6 +105,9 @@ nav {
           margin: 0 10px 0 0;
         }
         &:hover {
+          background: linear-gradient(90deg, #eee, #f5f5f5);
+        }
+        &.active {
           background: linear-gradient(90deg, #9cebed, #c7ffbc);
         }
       }
