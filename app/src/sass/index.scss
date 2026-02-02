@@ -55,7 +55,7 @@ body {
 
   * {
     box-sizing: border-box;
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Manrope', sans-serif !important;
     max-width: 100%;
   }
 }
@@ -75,15 +75,43 @@ h6 {
   letter-spacing: -0.75px;
   font-weight: bolder;
   font-size: 34px;
+}
+
+.gradientFont1 {
   background: linear-gradient(90deg, #13320c, #195f72);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+.smallerHeading {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #656565;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
 p {
   margin: 0 0 5px 0;
   font-weight: normal;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 25px 0;
+}
+
+.d-flex1 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+button,
+label {
+  cursor: pointer !important;
 }
 
 nav {
@@ -95,9 +123,10 @@ nav {
     list-style: none;
     li {
       a {
-        color: #13320c;
+        color: #195f72;
         display: inline-block;
         padding: 5px 10px;
+        transition: all 0.3s ease;
         &:before {
           content: '//';
           color: #195f72;
@@ -109,6 +138,7 @@ nav {
         }
         &.active {
           background: linear-gradient(90deg, #9cebed, #c7ffbc);
+          color: #13320c;
         }
       }
     }
@@ -132,4 +162,74 @@ main {
     padding: 45px 50px;
     overflow: auto;
   }
+}
+
+button,
+input[type='button'],
+input[type='submit'] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+button[disabled] {
+  filter: grayscale(1);
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+
+.gradient1 {
+  background: linear-gradient(90deg, #9cebed, #c7ffbc);
+  color: #2c2c2c;
+  font-weight: bold;
+}
+
+.gradientBorder1 {
+  border: 3px solid;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(90deg, #9cebed, #c7ffbc);
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  color: #2c2c2c;
+}
+
+.colorGreen1 {
+  color: #38a3a5;
+}
+.backgroundGreen1 {
+  background-color: #38a3a5;
+}
+.borderGreen1 {
+  border: 1px solid #38a3a5;
+}
+
+.colorBlue1 {
+  color: #195f72;
+}
+.backgroundBlue1 {
+  background-color: #195f72;
+}
+.borderBlue1 {
+  border: 1px solid #195f72;
+}
+
+.colorRed1 {
+  color: #da3f3f;
+}
+.backgroundRed1 {
+  background-color: #da3f3f;
+}
+.borderRed1 {
+  border: 1px solid #da3f3f;
+}
+
+.colorGray1 {
+  color: #656565;
+}
+.backgroundGray1 {
+  background-color: #656565;
+}
+.borderGray1 {
+  border: 1px solid #656565;
 }
