@@ -5,11 +5,14 @@ import { Theme } from '@radix-ui/themes/dist/cjs/components/index.js';
 import '@radix-ui/themes/styles.css';
 import './sass/index.scss';
 import './sass/customTheme.scss';
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Theme accentColor="teal">
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Theme>
   </StrictMode>,
 );
