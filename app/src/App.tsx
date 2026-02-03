@@ -3,12 +3,10 @@ import { NavLink, Route, Routes } from 'react-router-dom';
 import CopyCommands from './views/CopyCommands/CopyCommands';
 import Flexplanation from './views/Flexplanation/Flexplanation';
 import SlugGenerator from './views/SlugGenerator/SlugGenerator';
-import { FaChildReaching } from 'react-icons/fa6';
 import CustomTooltip from './components/CustomTooltip/CustomTooltip';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify/unstyled';
 import { Slide } from 'react-toastify';
-import { GiHighFive } from 'react-icons/gi';
 import { GoSmiley } from 'react-icons/go';
 
 const App = () => {
@@ -60,12 +58,13 @@ const App = () => {
           </div>
         </aside>
         <div className="mainContent">
-          <Routes>
-            <Route path="/" element={<CopyCommands />} />
-            <Route path="/slug-generator" element={<SlugGenerator />} />
-            <Route path="/flexplanation" element={<Flexplanation />} />
-            <Route path="*" element={<p>Not Found</p>} />
-          </Routes>
+          <div className="contentWrapper">
+            <Routes>
+              <Route path="/" element={<CopyCommands />} />
+              <Route path="/slug-generator" element={<SlugGenerator />} />
+              <Route path="/flexplanation" element={<Flexplanation />} />
+            </Routes>
+          </div>
         </div>
       </main>
       <ToastContainer
