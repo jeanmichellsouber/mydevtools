@@ -1,12 +1,9 @@
-export const currentClass = (className: string): string => {
-  return window.location.pathname.replace('/', '') === className
-    ? 'active'
-    : '';
-};
-
 export const generateSlug = (text: string, separator: string) => {
   return text
+    .trim()
     .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, separator)
     .replace(/^[-]+|[-]+$/g, '');
 };
