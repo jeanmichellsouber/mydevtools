@@ -3,6 +3,8 @@ import { NavLink, Route, Routes } from 'react-router-dom';
 import CopyCommands from './views/CopyCommands/CopyCommands';
 import Flexplanation from './views/Flexplanation/Flexplanation';
 import SlugGenerator from './views/SlugGenerator/SlugGenerator';
+import { FaChildReaching } from 'react-icons/fa6';
+import CustomTooltip from './components/CustomTooltip/CustomTooltip';
 
 const App = () => {
   return (
@@ -23,6 +25,33 @@ const App = () => {
               </li>
             </ul>
           </nav>
+          <div>
+            <p>
+              By{' '}
+              <a
+                className="colorGreen1"
+                href="mailto:jeanmichellsouber@gmail.com"
+              >
+                Jean Michell{' '}
+                <CustomTooltip content="Say Hi to me, or report a bug!">
+                  <FaChildReaching />
+                </CustomTooltip>
+              </a>
+              .
+            </p>
+            <p>
+              <small>
+                If this app helps you, consider helping me keeping it on air, by{' '}
+                <a
+                  className="colorGreen1"
+                  href="https://www.paypal.com/donate/?hosted_button_id=MMWB2XULZH7LE"
+                >
+                  making a donation using PayPal
+                </a>
+                .
+              </small>
+            </p>
+          </div>
         </aside>
         <div className="mainContent">
           <Routes>

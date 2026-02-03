@@ -3,6 +3,7 @@ import { BlankWrapper } from '../../components/BlankWrapper';
 import { copyToClipboard, generateSlug } from '../../utils/utils';
 import { BsCopy } from 'react-icons/bs';
 import { useState } from 'react';
+import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
 
 const SlugGenerator = () => {
   const [inputText, setInputText] = useState<string>('');
@@ -16,7 +17,7 @@ const SlugGenerator = () => {
   return (
     <>
       <h1 className="gradientFont1">Slug Generator</h1>
-      <p>Create slugs based on your text. Perfect for URLs, branches, etc.</p>
+      <p>Create slugs based on your text. Perfect for URLs and branches.</p>
 
       <BlankWrapper>
         <h3 className="smallerHeading">Generator</h3>
@@ -37,9 +38,14 @@ const SlugGenerator = () => {
           </p>
         </Flex>
 
-        <Flex align="start" direction="column" gap="2" my="6">
+        <Flex align="start" my="6" wrap="wrap">
           {arrayOfPossibilities.map((separator, index) => (
-            <Flex asChild gap="2" key={separator + index}>
+            <Flex
+              asChild
+              gap="2"
+              key={separator + index}
+              style={{ width: '50%' }}
+            >
               <Text as="label" size="3">
                 <Radio
                   disabled={invalidInput}
@@ -58,24 +64,28 @@ const SlugGenerator = () => {
           ))}
         </Flex>
 
-        <Button
-          size="3"
-          variant="solid"
-          color="blue"
-          className="gradient1"
-          style={{ width: '100%' }}
-          disabled={invalidInput}
-          onClick={() => {
-            copyToClipboard(generateSlug(inputText, separator));
-          }}
-        >
-          <span>
-            {inputText && separator
-              ? generateSlug(inputText, separator)
-              : 'Generate a slug'}
-          </span>
-          <BsCopy />
-        </Button>
+        <CustomTooltip content="Click to copy to your clipboard area">
+          <Button
+            size="3"
+            variant="solid"
+            color="blue"
+            className="gradient1"
+            style={{
+              width: '100%',
+            }}
+            disabled={invalidInput}
+            onClick={() => {
+              copyToClipboard(generateSlug(inputText, separator));
+            }}
+          >
+            <span>
+              {inputText && separator
+                ? generateSlug(inputText, separator)
+                : 'Generate a slug'}
+            </span>
+            <BsCopy />
+          </Button>
+        </CustomTooltip>
       </BlankWrapper>
     </>
   );
