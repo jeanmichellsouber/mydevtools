@@ -4,6 +4,9 @@ import { ManagementButton } from '../../components/ManagementButton';
 
 import { PiArrowsDownUpLight } from 'react-icons/pi';
 import { RiDeleteBin7Line } from 'react-icons/ri';
+import * as Accordion from '@radix-ui/react-accordion';
+import { AccordionUnity } from '../../components/AccordionUnity';
+import { CopyCommandButton } from '../../components/CopyCommandButton';
 
 const CopyCommands = () => {
   return (
@@ -47,7 +50,26 @@ const CopyCommands = () => {
         </div>
         <hr />
         <h3 className="smallerHeading">Listing</h3>
-        <p>lorem ipsum</p>
+        <div>
+          <Accordion.Root type="single" collapsible>
+            {[1, 2, 3, 4, 5].map(item => (
+              <AccordionUnity
+                key={item}
+                headerTitle={`Group of commands ${item}`}
+                value={`item-${item}`}
+              >
+                <CopyCommandButton
+                  label="npm install react-router-dom"
+                  type="command"
+                />
+                <CopyCommandButton
+                  label="https://reactrouter.com/en/main"
+                  type="link"
+                />
+              </AccordionUnity>
+            ))}
+          </Accordion.Root>
+        </div>
       </BlankWrapper>
     </>
   );

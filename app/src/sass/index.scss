@@ -109,6 +109,14 @@ hr {
   gap: 20px;
 }
 
+.highlightedText1 {
+  background-color: #fff;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  text-align: center;
+  min-width: 30px;
+}
+
 button,
 label {
   cursor: pointer !important;
@@ -162,15 +170,19 @@ main {
   .mainContent {
     background-color: #f4f4f4;
     width: calc(100% - 275px);
-    padding: 45px 50px;
     overflow: auto;
+
+    .contentWrapper {
+      min-height: calc(100vh - 69px);
+      padding: 45px 50px;
+    }
   }
 }
 
 button,
 input[type='button'],
 input[type='submit'] {
-  span {
+  & > span {
     max-width: calc(100% - 45px);
     white-space: nowrap;
     overflow: hidden;
@@ -247,4 +259,17 @@ label {
 }
 .borderGray1 {
   border: 1px solid #656565;
+}
+
+// overriding toast notification styles
+
+.Toastify__toast--success {
+  background: linear-gradient(to right, #2d323a, #003e59);
+  zoom: 0.9;
+  .Toastify__progress-bar--success {
+    background: linear-gradient(90deg, #9cebed, #c7ffbc);
+  }
+  svg {
+    fill: #c7ffbc;
+  }
 }

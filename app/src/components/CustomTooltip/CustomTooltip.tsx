@@ -11,7 +11,7 @@ const CustomTooltip = ({ children, content, side }: CustomTooltipProps) => {
             side={side || 'top'}
             sideOffset={5}
             style={{
-              background: '#000',
+              background: 'linear-gradient(to right, #2d323a, #003e59)',
               color: '#fff',
               padding: '4px 8px',
               borderRadius: '4px',
@@ -19,7 +19,7 @@ const CustomTooltip = ({ children, content, side }: CustomTooltipProps) => {
             }}
           >
             {content}
-            <Tooltip.Arrow />
+            <Tooltip.Arrow style={{ fill: '#003e59' }} />
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>
