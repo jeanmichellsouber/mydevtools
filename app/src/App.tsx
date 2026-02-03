@@ -5,6 +5,11 @@ import Flexplanation from './views/Flexplanation/Flexplanation';
 import SlugGenerator from './views/SlugGenerator/SlugGenerator';
 import { FaChildReaching } from 'react-icons/fa6';
 import CustomTooltip from './components/CustomTooltip/CustomTooltip';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify/unstyled';
+import { Slide } from 'react-toastify';
+import { GiHighFive } from 'react-icons/gi';
+import { GoSmiley } from 'react-icons/go';
 
 const App = () => {
   return (
@@ -31,10 +36,11 @@ const App = () => {
               <a
                 className="colorGreen1"
                 href="mailto:jeanmichellsouber@gmail.com"
+                target="_blank"
               >
                 Jean Michell{' '}
                 <CustomTooltip content="Say Hi to me, or report a bug!">
-                  <FaChildReaching />
+                  <GoSmiley />
                 </CustomTooltip>
               </a>
               .
@@ -62,6 +68,19 @@ const App = () => {
           </Routes>
         </div>
       </main>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Slide}
+      />
     </>
   );
 };

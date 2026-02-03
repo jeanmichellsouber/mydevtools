@@ -4,6 +4,7 @@ import { copyToClipboard, generateSlug } from '../../utils/utils';
 import { BsCopy } from 'react-icons/bs';
 import { useState } from 'react';
 import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
+import { toast } from 'react-toastify/unstyled';
 
 const SlugGenerator = () => {
   const [inputText, setInputText] = useState<string>('');
@@ -57,7 +58,7 @@ const SlugGenerator = () => {
                     setSeparator(input.target.value);
                   }}
                 />
-                Use <span className="colorGreen1">( {separator} )</span> as
+                Use <span className="highlightedText1">{separator}</span> as
                 separator
               </Text>
             </Flex>
@@ -76,6 +77,7 @@ const SlugGenerator = () => {
             disabled={invalidInput}
             onClick={() => {
               copyToClipboard(generateSlug(inputText, separator));
+              toast('Copied to clipboard!', { type: 'success' });
             }}
           >
             <span>
