@@ -4,8 +4,10 @@ import {
   StyledCopyCommandLink,
 } from './CopyCommandButton.styles';
 import type { CopyCommandButtonProps } from './CopyCommandButton.types';
-import { IoLinkOutline } from 'react-icons/io5';
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { MdOutlineHttp } from 'react-icons/md';
+import { toast } from 'react-toastify/unstyled';
+import { copyToClipboard } from '../../utils/utils';
+import { GoCommandPalette, GoLinkExternal } from 'react-icons/go';
 
 export const CopyCommandButton = ({
   label,
@@ -13,9 +15,15 @@ export const CopyCommandButton = ({
   ...rest
 }: CopyCommandButtonProps) => {
   return type === 'command' ? (
-    <StyledCopyCommandButton {...rest}>
-      <div>
-        <div className="icon">{<MdOutlineKeyboardArrowRight size="23" />}</div>
+    <StyledCopyCommandButton
+      {...rest}
+      onClick={() => {
+        copyToClipboard(label);
+        toast('Copied to clipboard!', { type: 'success' });
+      }}
+    >
+      <div style={{ width: 'calc(100% - 20px)' }}>
+        <div className="icon">{<GoCommandPalette />}</div>
         <span>{label}</span>
       </div>
       <div>
@@ -23,13 +31,13 @@ export const CopyCommandButton = ({
       </div>
     </StyledCopyCommandButton>
   ) : (
-    <StyledCopyCommandLink {...rest} href={label}>
-      <div>
-        <div className="icon">{<IoLinkOutline size="20" />}</div>
-        <span>{label}</span>
+    <StyledCopyCommandLink {...rest} href={label} target="_blank">
+      <div style={{ width: 'calc(100% - 20px)' }}>
+        <div className="icon">{<MdOutlineHttp />}</div>
+        <span style={{ textDecoration: 'underline' }}>{label}</span>
       </div>
       <div>
-        <BsCopy size="15" />
+        <GoLinkExternal size="17" />
       </div>
     </StyledCopyCommandLink>
   );

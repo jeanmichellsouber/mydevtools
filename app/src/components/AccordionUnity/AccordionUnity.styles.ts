@@ -20,11 +20,12 @@ const slideUp = keyframes`
 `;
 
 export const StyledAccordionUnity = styled(Accordion.Item)`
-  // margin-bottom: -1px;
   .accordion-header {
     margin: 0;
+    position: sticky;
+    top: 0;
     .accordion-trigger {
-      transition: background-color 0.2s ease-in-out;
+      transition: background-color 0.1s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -38,6 +39,9 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
       font-weight: 600;
       color: #000000;
       text-align: left;
+      &:hover {
+        background-color: #f1f1f1;
+      }
       &[data-state='open'] {
         background-color: #c5ffb9;
       }
@@ -45,7 +49,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
   }
   .accordion-content {
     transition: background-color 0.2s ease-in-out;
-    background-color: #fafafa;
+    background-color: #fff;
     overflow: hidden;
 
     &[data-state='open'] {
@@ -58,6 +62,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
 
     & > div {
       padding: 15px 20px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
     }
   }
 `;

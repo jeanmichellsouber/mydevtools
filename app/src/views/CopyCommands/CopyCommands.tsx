@@ -7,6 +7,7 @@ import { RiDeleteBin7Line } from 'react-icons/ri';
 import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionUnity } from '../../components/AccordionUnity';
 import { CopyCommandButton } from '../../components/CopyCommandButton';
+import { ContextMenu } from 'radix-ui';
 
 const CopyCommands = () => {
   return (
@@ -59,16 +60,44 @@ const CopyCommands = () => {
                 value={`item-${item}`}
               >
                 <CopyCommandButton
-                  label="npm install react-router-dom"
+                  label="npm install react-router-dom npm install react-router-dom npm install react-router-dom npm install react-router-dom npm install react-router-dom"
                   type="command"
                 />
                 <CopyCommandButton
                   label="https://reactrouter.com/en/main"
                   type="link"
                 />
+                <CopyCommandButton
+                  label="npm install react-router-dom"
+                  type="command"
+                />
               </AccordionUnity>
             ))}
           </Accordion.Root>
+        </div>
+        <hr />
+        <h3 className="smallerHeading">testing</h3>
+        <div>
+          <ContextMenu.Root>
+            <ContextMenu.Trigger>
+              <div style={{ padding: 20, border: '1px solid #ccc' }}>
+                Right-click me!
+              </div>
+            </ContextMenu.Trigger>
+
+            <ContextMenu.Content className="menu">
+              <ContextMenu.Item onSelect={() => alert('Action 1')}>
+                Action 1
+              </ContextMenu.Item>
+              <ContextMenu.Item onSelect={() => alert('Action 2')}>
+                Action 2
+              </ContextMenu.Item>
+              <ContextMenu.Separator />
+              <ContextMenu.Item onSelect={() => alert('Another Action')}>
+                Another Action
+              </ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu.Root>
         </div>
       </BlankWrapper>
     </>

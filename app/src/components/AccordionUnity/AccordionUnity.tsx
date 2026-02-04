@@ -8,10 +8,18 @@ export const AccordionUnity = ({
   headerTitle,
   value,
 }: AccordionUnityProps) => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <StyledAccordionUnity value={value}>
       <Accordion.Header className="accordion-header">
-        <Accordion.Trigger className="accordion-trigger">
+        <Accordion.Trigger
+          className="accordion-trigger"
+          onClick={() => {
+            scrollToTop();
+          }}
+        >
           {headerTitle} <IoIosArrowDown />
         </Accordion.Trigger>
       </Accordion.Header>
