@@ -12,11 +12,11 @@ import { GoCommandPalette, GoLinkExternal } from 'react-icons/go';
 export const CopyCommandButton = ({
   label,
   type,
-  ...rest
+  hint,
 }: CopyCommandButtonProps) => {
   return type === 'command' ? (
     <StyledCopyCommandButton
-      {...rest}
+      title={hint || label}
       onClick={() => {
         copyToClipboard(label);
         toast('Copied to clipboard!', { type: 'success' });
@@ -31,7 +31,7 @@ export const CopyCommandButton = ({
       </div>
     </StyledCopyCommandButton>
   ) : (
-    <StyledCopyCommandLink {...rest} href={label} target="_blank">
+    <StyledCopyCommandLink title={hint || label} href={label} target="_blank">
       <div style={{ width: 'calc(100% - 20px)' }}>
         <div className="icon">{<MdOutlineHttp />}</div>
         <span style={{ textDecoration: 'underline' }}>{label}</span>

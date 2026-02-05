@@ -32,9 +32,11 @@ const styles = `
   }
   &:hover {
     background: #f1f1f1;
-    .icon {
-      background-color: #e8e8e8;
-    }
+    // .icon {
+    //   background-color: #38a3a5;
+    //   svg {
+    //     color: #fff;}
+    // }
   }
   &:active {
     background: #e8e8e8;
@@ -42,7 +44,6 @@ const styles = `
 
   span {
     color: #393939;
-    // font-weight: 600;
     font-family: 'Courier New', serif !important;
     font-size: 16px;
     max-width: calc(100% - 45px);
