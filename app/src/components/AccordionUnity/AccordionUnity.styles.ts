@@ -48,7 +48,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
       }
       &[data-state='open'] {
         background-color: #c5ffb9;
-        svg {
+        > svg {
           transform: rotate(180deg);
         }
       }
