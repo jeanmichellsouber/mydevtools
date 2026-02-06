@@ -1,7 +1,12 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
 import type { CustomTooltipProps } from './CustomTooltip.types';
 
-const CustomTooltip = ({ children, content, side }: CustomTooltipProps) => {
+const CustomTooltip = ({
+  children,
+  content,
+  side,
+  maxWidth,
+}: CustomTooltipProps) => {
   return (
     <Tooltip.Provider delayDuration={0} disableHoverableContent>
       <Tooltip.Root>
@@ -16,6 +21,8 @@ const CustomTooltip = ({ children, content, side }: CustomTooltipProps) => {
               padding: '4px 8px',
               borderRadius: '4px',
               fontSize: '14px',
+              maxWidth,
+              textAlign: 'center',
             }}
           >
             {content}
