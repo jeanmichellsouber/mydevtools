@@ -10,9 +10,40 @@ import { Dialog } from '../../components/Dialog';
 import { useState } from 'react';
 import { Button, TextField } from '@radix-ui/themes';
 import { CustomCheckbox } from '../../components/CustomCheckbox';
+import {
+  Controller,
+  useForm,
+  useFieldArray,
+  type SubmitHandler,
+} from 'react-hook-form';
 
 const CopyCommands = () => {
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [addDialog, setAddDialog] = useState<boolean>(false);
+
+  type FormValues = {
+    list: {
+      command: string;
+      hint: string;
+      link: boolean;
+    }[];
+  };
+
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      id: '',
+      title: '',
+      list: [],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    list: 'list',
+  });
+
+  const onSubmit: SubmitHandler<IFormInput> = data => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -33,7 +64,7 @@ const CopyCommands = () => {
             icon={<BsTerminal />}
             color="#38A3A5"
             onClick={() => {
-              setDialogOpen(true);
+              setAddDialog(true);
             }}
           />
           <ManagementButton
@@ -82,64 +113,109 @@ const CopyCommands = () => {
         </div>
         <div>
           {/* add new groups of commands */}
-          <Dialog open={dialogOpen}>
-            <h3 className="gradientFont1">Add a group of commands / strings</h3>
-            <TextField.Root
-              autoFocus
-              size="3"
-              placeholder="Group title"
-              onChange={() => {}}
-            />
-            <p>
-              <small>
-                This is the title that will be on the accordion's header.
-              </small>
-            </p>
-            <hr />
-            <p className="colorGreen1">
-              <strong>List of commands / strings</strong>
-            </p>
-            <div className="d-flex1">
-              <TextField.Root
+          <Dialog open={addDialog}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <h3 className="gradientFont1">
+                Add a group of commands / strings
+              </h3>
+              <Controller
+                name="groupTitle"
+                control={control}
+                render={({ field }) => (
+                  <TextField.Root
+                    {...field}
+                    autoFocus
+                    size="3"
+                    placeholder="Group title"
+                    // onChange={() => {}}
+                  />
+                )}
+              />
+              <p>
+                <small>
+                  This is the title that will be on the accordion's header.
+                </small>
+              </p>
+              <hr />
+              <p className="colorGreen1">
+                <strong>List of commands / strings</strong>
+              </p>
+              {fields.map((field, index) => (
+                <>
+                  <div className="d-flex1">
+                    <Controller
+                      name="commands[].command"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField.Root
+                          {...field}
+                          size="3"
+                          placeholder="String / command"
+                          style={{ flexGrow: 3 }}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="commands[].hint"
+                      control={control}
+                      render={({ field }) => (
+                        <TextField.Root
+                          {...field}
+                          size="3"
+                          placeholder="Hint"
+                          style={{ flexGrow: 1 }}
+                        />
+                      )}
+                    />
+                    <Controller
+                      name="commands[].link"
+                      control={control}
+                      render={({ field }) => (
+                        <CustomCheckbox
+                          {...field}
+                          label="Click to turn this string into a hyperlink (_blank)"
+                          icon={<BsLink45Deg />}
+                          color="#9CEBED"
+                        />
+                      )}
+                    />
+                  </div>
+                  <button type="button" onClick={() => remove(index)}>
+                    Remove
+                  </button>
+                </>
+              ))}
+              <button type="button" onClick={() => append(index)}>
+                append
+              </button>
+              <hr />
+              <Button
                 size="3"
-                placeholder="String / command"
-                onChange={() => {}}
-                style={{ flexGrow: 3 }}
-              />
-              <TextField.Root
-                size="3"
-                placeholder="Hint"
-                onChange={() => {}}
-                style={{ flexGrow: 1 }}
-              />
-              <CustomCheckbox
-                label="Click to turn this string into a hyperlink (_blank)"
-                icon={<BsLink45Deg />}
-                onChange={() => {}}
-                color="#9CEBED"
-              />
-            </div>
-            <hr />
-            <Button
-              size="3"
-              variant="solid"
-              color="blue"
-              className="gradient1"
-              style={{
-                width: '100%',
-              }}
-              onClick={() => {}}
-            >
-              <span>Add a group of strings / commands</span>
-            </Button>
-            <a
-              onClick={() => {
-                return false;
-              }}
-              href="#closeModal"
-            >
-              Cancel and close the modal
-            </a>
+                variant="solid"
+                color="blue"
+                className="gradient1"
+                style={{
+                  width: '100%',
+                }}
+                onClick={() => {}}
+              >
+                <span>Add a group of strings / commands</span>
+              </Button>
+              <p style={{ textAlign: 'center' }}>
+                <small>
+                  <a
+                    onClick={e => {
+                      setAddDialog(false);
+                      e.preventDefault();
+                    }}
+                    className="red-link"
+                    href="#closeModal"
+                  >
+                    Cancel and close the modal
+                  </a>
+                </small>
+              </p>
+            </form>
           </Dialog>
         </div>
       </BlankWrapper>

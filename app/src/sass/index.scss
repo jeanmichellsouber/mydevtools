@@ -223,6 +223,14 @@ label {
   // }
 }
 
+.red-link {
+  color: #da3f3f;
+  border-bottom: solid 1px #da3f3f;
+  text-align: center;
+  display: inline-block;
+  margin: 10px 0;
+}
+
 .gradient1 {
   background: linear-gradient(90deg, #9cebed, #c7ffbc);
   color: #2c2c2c;
