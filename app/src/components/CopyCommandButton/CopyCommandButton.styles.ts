@@ -42,10 +42,21 @@ const styles = `
     background: #e8e8e8;
   }
 
+  .hint {
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    color: #777;
+    margin-bottom: -1px;
+    // font-family: 'Courier New', serif !important;
+  }
+
   span {
-    color: #393939;
+    color: #111;
+    font-weight: 500;
     font-family: 'Courier New', serif !important;
-    font-size: 16px;
+    font-size: 14px;
     max-width: calc(100% - 45px);
     white-space: nowrap;
     overflow: hidden;

@@ -24,7 +24,10 @@ export const CopyCommandButton = ({
     >
       <div style={{ width: 'calc(100% - 20px)' }}>
         <div className="icon">{<GoCommandPalette />}</div>
-        <span>{label}</span>
+        <span>
+          <small className="hint">{hint}</small>
+          <span>{label}</span>
+        </span>
       </div>
       <div>
         <BsCopy size="15" />
