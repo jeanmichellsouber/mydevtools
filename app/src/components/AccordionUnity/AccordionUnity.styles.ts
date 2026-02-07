@@ -25,14 +25,13 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
     position: sticky;
     top: 0;
     .accordion-trigger {
-      transition: background-color 0.1s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background-color: #fff;
       border: none;
       border-bottom: solid 1px #e9e9e9;
-      height: 57px;
+      height: 50px;
       width: 100%;
       padding: 0 20px;
       font-size: 16px;
@@ -96,16 +95,16 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
     width: 90%;
   }
   .accordion-content {
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.05s ease;
     background-color: #fff;
     overflow: hidden;
 
     &[data-state='open'] {
-      animation: ${slideDown} 250ms ease-out;
+      animation: ${slideDown} 200ms ease;
     }
 
     &[data-state='closed'] {
-      animation: ${slideUp} 250ms ease-out;
+      animation: ${slideUp} 200ms ease;
     }
 
     & > div {

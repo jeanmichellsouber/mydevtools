@@ -23,6 +23,7 @@ const CustomTooltip = ({
               fontSize: '14px',
               maxWidth,
               textAlign: 'center',
+              marginBottom: '-1px',
             }}
           >
             {content}
