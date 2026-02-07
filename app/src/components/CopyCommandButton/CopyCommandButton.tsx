@@ -34,7 +34,9 @@ export const CopyCommandButton = ({
     <StyledCopyCommandLink title={hint || label} href={label} target="_blank">
       <div style={{ width: 'calc(100% - 20px)' }}>
         <div className="icon">{<MdOutlineHttp />}</div>
-        <span style={{ textDecoration: 'underline' }}>{label}</span>
+        <span style={{ borderBottom: 'solid 1px rgba(0,0,0,0.15)' }}>
+          {label}
+        </span>
       </div>
       <div>
         <GoLinkExternal size="17" />
