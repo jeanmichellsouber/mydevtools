@@ -1,14 +1,18 @@
 import { BsLink45Deg, BsTerminal } from 'react-icons/bs';
 import { BlankWrapper } from '../../components/BlankWrapper';
 import { ManagementButton } from '../../components/ManagementButton';
-import { PiArrowsDownUpLight } from 'react-icons/pi';
+import {
+  PiArrowsDownUpLight,
+  PiDownloadSimple,
+  PiUploadSimple,
+} from 'react-icons/pi';
 import { RiDeleteBin7Line } from 'react-icons/ri';
 import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionUnity } from '../../components/AccordionUnity';
 import { CopyCommandButton } from '../../components/CopyCommandButton';
 import { Dialog } from '../../components/Dialog';
 import { useState } from 'react';
-import { Button, TextField } from '@radix-ui/themes';
+import { Button, Flex, Radio, Text, TextField } from '@radix-ui/themes';
 import { CustomCheckbox } from '../../components/CustomCheckbox';
 import {
   Controller,
@@ -22,18 +26,34 @@ import { IoMdRemove } from 'react-icons/io';
 import { LiaPlusSolid } from 'react-icons/lia';
 import { generateSlug } from '../../utils/utils';
 import { MdInfoOutline } from 'react-icons/md';
-import { GrDownload } from 'react-icons/gr';
+import { LuFileJson2 } from 'react-icons/lu';
+import { toast } from 'react-toastify';
+
+// type definitions
+
+type CommandsValues = {
+  title: string;
+  id: string;
+  list: {
+    command: string;
+    hint: string;
+    link: boolean;
+  }[];
+};
+
+type ImportExportValues = {
+  appendOrReplace: 'append' | 'replace';
+  file: File | null;
+};
 
 const CopyCommands = () => {
+  // definitions of states and functions related to the management of groups of commands
   const [commands_LS, setCommands_LS] = useState(
     JSON.parse(localStorage.getItem('commands') || 'null'),
   );
-
   const [add_Dialog, setAdd_Dialog] = useState<boolean>(false);
-
   const [removeCommands_Dialog, setRemoveCommands_Dialog] =
     useState<boolean>(false);
-
   const [removeCommand_Dialog, setRemoveCommand_Dialog] = useState<{
     open: boolean;
     id: string | null;
@@ -41,7 +61,6 @@ const CopyCommands = () => {
     open: false,
     id: null,
   });
-
   const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
     open: boolean;
     id: string | null;
@@ -49,23 +68,14 @@ const CopyCommands = () => {
     open: false,
     id: null,
   });
-
   const [importExport_Dialog, setImportExport_Dialog] =
     useState<boolean>(false);
-
   const [info_Dialog, setInfo_Dialog] = useState<boolean>(false);
+  const [importExportFile, setImportExportFile] = useState<File | null>(null);
 
-  type FormValues = {
-    title: string;
-    id: string;
-    list: {
-      command: string;
-      hint: string;
-      link: boolean;
-    }[];
-  };
+  // functions related to the creation of groups of commands
 
-  const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, reset } = useForm<CommandsValues>({
     defaultValues: {
       title: '',
       id: '',
@@ -81,13 +91,15 @@ const CopyCommands = () => {
   const title = useWatch({ control, name: 'title' });
   const listFields = useWatch({ control, name: 'list' });
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<CommandsValues> = data => {
     const newCommands = [...(commands_LS || []), data];
     localStorage.setItem('commands', JSON.stringify(newCommands));
     setCommands_LS(newCommands);
     setAdd_Dialog(false);
     reset();
   };
+
+  // functions related to the listing of groups of commands
 
   const deleteSpecificFn = (id: string) => {
     setRemoveCommand_Dialog({ open: true, id });
@@ -131,6 +143,69 @@ const CopyCommands = () => {
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
+    setImportExport_Dialog(false);
+    toast('Data exported successfully!', { type: 'success' });
+  };
+
+  const importData = (file: File, appendOrReplace: 'append' | 'replace') => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const importedCommands = JSON.parse(e.target?.result as string);
+        if (
+          Array.isArray(importedCommands) &&
+          importedCommands.every(
+            (cmd): cmd is CommandsValues =>
+              typeof cmd.title === 'string' &&
+              typeof cmd.id === 'string' &&
+              Array.isArray(cmd.list),
+          )
+        ) {
+          const importedCommandsWithNewIds = importedCommands.map(
+            (group: CommandsValues) => ({
+              ...group,
+              id: `${generateSlug(group.title, '-')}-${Date.now()}`,
+            }),
+          );
+          const newCommands =
+            appendOrReplace === 'append'
+              ? [...(commands_LS || []), ...importedCommandsWithNewIds]
+              : importedCommandsWithNewIds;
+          localStorage.setItem('commands', JSON.stringify(newCommands));
+          setCommands_LS(newCommands);
+          setImportExport_Dialog(false);
+          setImportExportFile(null);
+          resetImportExport();
+        } else {
+          // alert('teste');
+          toast.error('Error importing data: Invalid file structure.');
+        }
+      } catch (error) {
+        // alert('teste 2');
+        toast.error(
+          'Error reading file. Please make sure it is a valid JSON file.',
+        );
+        console.log('Error reading file:', error);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // functions related to the management of the Import Export Dialog
+
+  const {
+    control: controlImportExport,
+    handleSubmit: handleSubmitImportExport,
+    reset: resetImportExport,
+  } = useForm<ImportExportValues>({
+    defaultValues: {
+      appendOrReplace: 'append',
+      file: null,
+    },
+  });
+
+  const onSubmitImportExport: SubmitHandler<ImportExportValues> = data => {
+    importData(data.file as File, data.appendOrReplace);
   };
 
   return (
@@ -210,7 +285,7 @@ const CopyCommands = () => {
                 </small>
               </div>
               <Accordion.Root type="single" collapsible>
-                {commands_LS.map((group: FormValues) => (
+                {commands_LS.map((group: CommandsValues) => (
                   <AccordionUnity
                     id={group.id}
                     key={group?.id}
@@ -220,13 +295,15 @@ const CopyCommands = () => {
                     duplicateFn={duplicateFn}
                     editSpecificFn={editSpecificFn}
                   >
-                    {group.list.map((item: FormValues['list'][number]) => (
-                      <CopyCommandButton
-                        label={item.command}
-                        type={item.link ? 'link' : 'command'}
-                        hint={item.hint}
-                      />
-                    ))}
+                    {group?.list?.map(
+                      (item: CommandsValues['list'][number]) => (
+                        <CopyCommandButton
+                          label={item.command}
+                          type={item.link ? 'link' : 'command'}
+                          hint={item.hint}
+                        />
+                      ),
+                    )}
                   </AccordionUnity>
                 ))}
               </Accordion.Root>
@@ -496,32 +573,145 @@ const CopyCommands = () => {
             <h3 className="gradientFont1">Import / Export</h3>
             <div style={{ display: 'flex', gap: '40px' }}>
               <div style={{ flex: 1 }}>
-                <p>
-                  Export a file <span className="colorGreen1">(.json)</span>{' '}
-                  containing the list of commands, to import in another browser.
-                </p>
-
-                <Button
-                  color="blue"
-                  variant="outline"
-                  style={{ display: 'block', width: '100%', margin: '10px 0' }}
-                  disabled={!commands_LS || commands_LS.length === 0}
-                  onClick={() => {
-                    exportData();
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    height: '100%',
                   }}
                 >
-                  Export all data{' '}
-                  <small style={{ margin: '0 5px' }}>
-                    {commands_LS ? commands_LS.length : 0} group(s)
-                  </small>{' '}
-                  <GrDownload />
-                </Button>
+                  <p>
+                    Export a file <span className="colorGreen1">(.json)</span>{' '}
+                    containing the list of commands, to import in another
+                    browser.
+                  </p>
+
+                  <Button
+                    color="blue"
+                    // variant="outline"
+                    style={{
+                      display: 'flex',
+                      width: '100%',
+                    }}
+                    disabled={!commands_LS || commands_LS.length === 0}
+                    onClick={() => {
+                      exportData();
+                    }}
+                  >
+                    Export all data{' '}
+                    <small>
+                      {commands_LS ? commands_LS.length : 0} group(s)
+                    </small>{' '}
+                    <PiDownloadSimple />
+                  </Button>
+                </div>
               </div>
               <div style={{ flex: 1 }}>
-                <p>
-                  Import a file <span className="colorGreen1">(.json)</span>{' '}
-                  containing a list of commands to add to your current commands.
-                </p>
+                <form onSubmit={handleSubmitImportExport(onSubmitImportExport)}>
+                  <p>
+                    Import a file <span className="colorGreen1">(.json)</span>{' '}
+                    containing a list of strings / commands.
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                    <Flex asChild gap="2" style={{ width: '50%' }}>
+                      <Text as="label" size="3">
+                        <Controller
+                          control={controlImportExport}
+                          name="appendOrReplace"
+                          render={({ field }) => (
+                            <Radio
+                              {...field}
+                              size="2"
+                              name="importExportOption"
+                              value="append"
+                              defaultChecked
+                            />
+                          )}
+                        />
+                        Append data
+                      </Text>
+                    </Flex>
+                    <Flex asChild gap="2" style={{ width: '50%' }}>
+                      <Text as="label" size="3">
+                        <Controller
+                          control={controlImportExport}
+                          name="appendOrReplace"
+                          render={({ field }) => (
+                            <Radio
+                              {...field}
+                              size="2"
+                              name="importExportOption"
+                              value="replace"
+                            />
+                          )}
+                        />
+                        Replace data
+                      </Text>
+                    </Flex>
+                  </div>
+                  <Controller
+                    name="file"
+                    control={controlImportExport}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <label style={{ display: 'block' }}>
+                        <input
+                          type="file"
+                          accept=".json"
+                          required
+                          style={{
+                            width: '0.1px',
+                            height: '0.1px',
+                            opacity: 0,
+                            overflow: 'hidden',
+                            position: 'absolute',
+                            zIndex: -1,
+                          }}
+                          onChange={e => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              setImportExportFile(file);
+                              field.onChange(file);
+                            }
+                          }}
+                        />
+
+                        <p
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            border: 'dashed 2px rgba(0,0,0,0.3)',
+                            padding: '3px 10px',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            margin: '5px 0',
+                          }}
+                        >
+                          {importExportFile
+                            ? importExportFile.name
+                            : 'Select a .json file'}{' '}
+                          <LuFileJson2 className="colorGreen1" />
+                        </p>
+                      </label>
+                    )}
+                  />
+                  <Button
+                    size="2"
+                    // variant="outline"
+                    disabled={!importExportFile}
+                    style={{
+                      marginTop: '10px',
+                      display: 'flex',
+                      width: '100%',
+                    }}
+                  >
+                    Import data <PiUploadSimple />
+                  </Button>
+                </form>
               </div>
             </div>
             <hr />

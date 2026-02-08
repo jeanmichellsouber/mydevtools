@@ -299,3 +299,14 @@ label {
     fill: #c7ffbc;
   }
 }
+
+.Toastify__toast--error {
+  background: linear-gradient(to right, #2d323a, #003e59);
+  zoom: 0.9;
+  .Toastify__progress-bar--error {
+    background: linear-gradient(90deg, #9cebed, #c7ffbc);
+  }
+  svg {
+    fill: #c7ffbc;
+  }
+}
