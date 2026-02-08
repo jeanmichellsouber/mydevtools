@@ -21,7 +21,7 @@ const SlugGenerator = () => {
       <p>Create slugs based on your text. Perfect for URLs and branches.</p>
 
       <BlankWrapper>
-        <h3 className="smallerHeading">Generator</h3>
+        <h3 className="smallerHeading">Generate your slug</h3>
 
         <Flex direction="column" my="6">
           <TextField.Root

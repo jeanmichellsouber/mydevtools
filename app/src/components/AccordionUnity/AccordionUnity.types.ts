@@ -3,5 +3,7 @@ export interface AccordionUnityProps {
   headerTitle: string;
   value: string;
   id: string;
-  deleteFn: (id: string) => void;
+  deleteSpecificFn: (id: string) => void;
+  duplicateFn: (id: string) => void;
+  editSpecificFn: (id: string) => void;
 }
