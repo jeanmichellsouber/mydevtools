@@ -7,7 +7,7 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionUnity } from '../../components/AccordionUnity';
 import { CopyCommandButton } from '../../components/CopyCommandButton';
 import { Dialog } from '../../components/Dialog';
-import { useState, type Key } from 'react';
+import { useState } from 'react';
 import { Button, TextField } from '@radix-ui/themes';
 import { CustomCheckbox } from '../../components/CustomCheckbox';
 import {
@@ -21,6 +21,8 @@ import { VscEmptyWindow } from 'react-icons/vsc';
 import { IoMdRemove } from 'react-icons/io';
 import { LiaPlusSolid } from 'react-icons/lia';
 import { generateSlug } from '../../utils/utils';
+import { MdInfoOutline } from 'react-icons/md';
+import { GrDownload } from 'react-icons/gr';
 
 const CopyCommands = () => {
   const [commands_LS, setCommands_LS] = useState(
@@ -31,6 +33,27 @@ const CopyCommands = () => {
 
   const [removeCommands_Dialog, setRemoveCommands_Dialog] =
     useState<boolean>(false);
+
+  const [removeCommand_Dialog, setRemoveCommand_Dialog] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({
+    open: false,
+    id: null,
+  });
+
+  const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({
+    open: false,
+    id: null,
+  });
+
+  const [importExport_Dialog, setImportExport_Dialog] =
+    useState<boolean>(false);
+
+  const [info_Dialog, setInfo_Dialog] = useState<boolean>(false);
 
   type FormValues = {
     title: string;
@@ -66,20 +89,66 @@ const CopyCommands = () => {
     reset();
   };
 
-  const deleteFn = (id: string) => {
-    const confirmed = confirm('Are you sure you want to continue?');
-    if (confirmed) {
-      const newCommands = commands_LS.filter(
-        (group: { id: string }) => group.id !== id,
-      );
+  const deleteSpecificFn = (id: string) => {
+    setRemoveCommand_Dialog({ open: true, id });
+  };
+
+  const deleteAllFn = () => {
+    localStorage.removeItem('commands');
+    setCommands_LS(null);
+    setRemoveCommands_Dialog(false);
+  };
+
+  const duplicateFn = (id: string) => {
+    const groupToDuplicate = commands_LS.find(
+      (group: { id: string }) => group.id === id,
+    );
+    if (groupToDuplicate) {
+      const newGroup = {
+        ...groupToDuplicate,
+        id: `${generateSlug(groupToDuplicate.title, '-')}-${Date.now()}`,
+        title: `${groupToDuplicate.title} (copy)`,
+      };
+      const newCommands = [...(commands_LS || []), newGroup];
       localStorage.setItem('commands', JSON.stringify(newCommands));
       setCommands_LS(newCommands);
     }
   };
 
+  const editSpecificFn = (id: string) => {
+    alert(`Edit group with id: ${id}`);
+  };
+
+  const exportData = () => {
+    if (!commands_LS || commands_LS.length === 0) return;
+
+    const dataStr =
+      'data:text/json;charset=utf-8,' +
+      encodeURIComponent(JSON.stringify(commands_LS));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', 'copycommands.json');
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
   return (
     <>
-      <h1 className="gradientFont1">Copy Commands</h1>
+      <h1
+        className="gradientFont1"
+        style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+      >
+        Copy Commands{' '}
+        <MdInfoOutline
+          size="24"
+          role="button"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setInfo_Dialog(true);
+          }}
+        />
+      </h1>
       <p>
         Online tool to create and maintain lists of strings. So it's easy to
         copy them by left-clicking.
@@ -113,7 +182,7 @@ const CopyCommands = () => {
             icon={<PiArrowsDownUpLight />}
             color="#195F72"
             onClick={() => {
-              alert('Import / Export');
+              setImportExport_Dialog(true);
             }}
           />
         </div>
@@ -121,41 +190,45 @@ const CopyCommands = () => {
         <div>
           {commands_LS ? (
             <>
-              <h3 className="smallerHeading">Listing</h3>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <h3 className="smallerHeading">Listing</h3>
+                <small
+                  style={{
+                    // margin: '-7px 0 10px 0',
+                    display: 'block',
+                    fontSize: '13px',
+                    color: 'rgba(0,0,0,0.5)',
+                  }}
+                >
+                  Right click over the header for actions.
+                </small>
+              </div>
               <Accordion.Root type="single" collapsible>
-                {commands_LS.map(
-                  (group: {
-                    id: Key | null | undefined;
-                    title: string;
-                    list: {
-                      command: string;
-                      link: boolean;
-                      hint: string | undefined;
-                    }[];
-                  }) => (
-                    <AccordionUnity
-                      id={group.id}
-                      key={group?.id}
-                      headerTitle={group.title}
-                      value={`group-${group.id}`}
-                      deleteFn={deleteFn}
-                    >
-                      {group.list.map(
-                        (item: {
-                          command: string;
-                          link: boolean;
-                          hint: string | undefined;
-                        }) => (
-                          <CopyCommandButton
-                            label={item.command}
-                            type={item.link ? 'link' : 'command'}
-                            hint={item.hint}
-                          />
-                        ),
-                      )}
-                    </AccordionUnity>
-                  ),
-                )}
+                {commands_LS.map((group: FormValues) => (
+                  <AccordionUnity
+                    id={group.id}
+                    key={group?.id}
+                    headerTitle={group.title}
+                    value={`group-${group.id}`}
+                    deleteSpecificFn={deleteSpecificFn}
+                    duplicateFn={duplicateFn}
+                    editSpecificFn={editSpecificFn}
+                  >
+                    {group.list.map((item: FormValues['list'][number]) => (
+                      <CopyCommandButton
+                        label={item.command}
+                        type={item.link ? 'link' : 'command'}
+                        hint={item.hint}
+                      />
+                    ))}
+                  </AccordionUnity>
+                ))}
               </Accordion.Root>
             </>
           ) : (
@@ -305,7 +378,8 @@ const CopyCommands = () => {
                 color="gray"
                 onClick={() => append({ command: '', hint: '', link: false })}
               >
-                Add new row <LiaPlusSolid />
+                <LiaPlusSolid /> Add new row{' '}
+                <small>(new string / command)</small>
               </Button>
 
               <hr />
@@ -320,7 +394,7 @@ const CopyCommands = () => {
                 onClick={() => {}}
                 disabled={!fields.length || !listFields?.[0]?.command || !title}
               >
-                <span>Add a group of strings / commands</span>
+                <span>Save group of strings / commands</span>
               </Button>
               <p style={{ textAlign: 'center' }}>
                 <small>
@@ -354,21 +428,137 @@ const CopyCommands = () => {
                 variant="solid"
                 color="red"
                 onClick={() => {
-                  localStorage.removeItem('commands');
-                  setCommands_LS(null);
-                  setRemoveCommands_Dialog(false);
+                  deleteAllFn();
                 }}
               >
-                Yes, delete all
+                <RiDeleteBin7Line /> Yes, delete all
               </Button>
               <Button
                 size="2"
                 variant="outline"
+                color="gray"
                 onClick={() => {
                   setRemoveCommands_Dialog(false);
                 }}
               >
                 Cancel
+              </Button>
+            </div>
+          </Dialog>
+
+          {/* Delete specific group of commands */}
+          <Dialog open={removeCommand_Dialog.open}>
+            <h3 className="gradientFont1">
+              Delete "
+              {commands_LS?.find(
+                (group: { id: string }) => group.id === removeCommand_Dialog.id,
+              )?.title || 'group of commands'}
+              "
+            </h3>
+            <p>
+              Are you sure you want to delete this group of commands? This
+              action cannot be undone.
+            </p>
+            <hr />
+            <div className="d-flex1" style={{ justifyContent: 'flex-end' }}>
+              <Button
+                size="2"
+                variant="solid"
+                color="red"
+                onClick={() => {
+                  const newCommands = commands_LS.filter(
+                    (group: { id: string }) =>
+                      group.id !== removeCommand_Dialog.id,
+                  );
+                  localStorage.setItem('commands', JSON.stringify(newCommands));
+                  setCommands_LS(newCommands);
+
+                  setRemoveCommand_Dialog({ open: false, id: null });
+                }}
+              >
+                <RiDeleteBin7Line /> Yes, delete it
+              </Button>
+              <Button
+                size="2"
+                variant="outline"
+                color="gray"
+                onClick={() => {
+                  setRemoveCommand_Dialog({ open: false, id: null });
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Dialog>
+
+          {/* Import Export Dialog */}
+          <Dialog size="large" open={importExport_Dialog}>
+            <h3 className="gradientFont1">Import / Export</h3>
+            <div style={{ display: 'flex', gap: '40px' }}>
+              <div style={{ flex: 1 }}>
+                <p>
+                  Export a file <span className="colorGreen1">(.json)</span>{' '}
+                  containing the list of commands, to import in another browser.
+                </p>
+
+                <Button
+                  color="blue"
+                  variant="outline"
+                  style={{ display: 'block', width: '100%', margin: '10px 0' }}
+                  disabled={!commands_LS || commands_LS.length === 0}
+                  onClick={() => {
+                    exportData();
+                  }}
+                >
+                  Export all data{' '}
+                  <small style={{ margin: '0 5px' }}>
+                    {commands_LS ? commands_LS.length : 0} group(s)
+                  </small>{' '}
+                  <GrDownload />
+                </Button>
+              </div>
+              <div style={{ flex: 1 }}>
+                <p>
+                  Import a file <span className="colorGreen1">(.json)</span>{' '}
+                  containing a list of commands to add to your current commands.
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div className="d-flex1" style={{ justifyContent: 'flex-end' }}>
+              <Button
+                size="2"
+                variant="outline"
+                color="gray"
+                onClick={() => {
+                  setImportExport_Dialog(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Dialog>
+
+          {/* Info Dialog */}
+          <Dialog open={info_Dialog}>
+            <h3 className="gradientFont1">Information</h3>
+            <p>
+              This tool allows you to create and manage lists of strings or
+              commands that you can easily copy to your clipboard by
+              left-clicking on them. You can organize these strings into groups,
+              making it easier to find and use them when needed.
+            </p>
+            <hr />
+            <div className="d-flex1" style={{ justifyContent: 'flex-end' }}>
+              <Button
+                size="2"
+                variant="outline"
+                color="gray"
+                onClick={() => {
+                  setInfo_Dialog(false);
+                }}
+              >
+                Close
               </Button>
             </div>
           </Dialog>

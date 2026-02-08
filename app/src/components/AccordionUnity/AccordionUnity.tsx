@@ -11,7 +11,9 @@ export const AccordionUnity = ({
   headerTitle,
   value,
   id,
-  deleteFn,
+  deleteSpecificFn,
+  duplicateFn,
+  editSpecificFn,
 }: AccordionUnityProps) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -38,14 +40,18 @@ export const AccordionUnity = ({
         <ContextMenu.Content className="context-menu">
           <ContextMenu.Item
             className="context-menu-item"
-            onSelect={() => alert('Action 1')}
+            onSelect={() => {
+              editSpecificFn(id);
+            }}
           >
             <span>Edit group</span>
             <FiEdit3 />
           </ContextMenu.Item>
           <ContextMenu.Item
             className="context-menu-item"
-            onSelect={() => alert('Action 2')}
+            onSelect={() => {
+              duplicateFn(id);
+            }}
           >
             <span>Duplicate group</span>
             <IoDuplicateOutline />
@@ -54,7 +60,7 @@ export const AccordionUnity = ({
           <ContextMenu.Item
             className="context-menu-item delete"
             onSelect={() => {
-              deleteFn(id);
+              deleteSpecificFn(id);
             }}
           >
             <span>Delete group</span>
