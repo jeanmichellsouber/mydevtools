@@ -51,7 +51,7 @@ const SlugGenerator = () => {
                 <Radio
                   disabled={invalidInput}
                   size="3"
-                  name="example"
+                  name="separator"
                   value={separator}
                   defaultChecked={separator === '-'}
                   onChange={input => {
