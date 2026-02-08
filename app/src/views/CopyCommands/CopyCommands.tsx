@@ -33,7 +33,7 @@ const CopyCommands = () => {
     useState<boolean>(false);
 
   type FormValues = {
-    groupTitle: string;
+    title: string;
     id: string;
     list: {
       command: string;
@@ -44,7 +44,7 @@ const CopyCommands = () => {
 
   const { control, handleSubmit, setValue, reset } = useForm<FormValues>({
     defaultValues: {
-      groupTitle: '',
+      title: '',
       id: '',
       list: [],
     },
@@ -55,11 +55,26 @@ const CopyCommands = () => {
     name: 'list',
   });
 
-  const groupTitle = useWatch({ control, name: 'groupTitle' });
+  const title = useWatch({ control, name: 'title' });
   const listFields = useWatch({ control, name: 'list' });
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    console.log(data);
+    const newCommands = [...(commands_LS || []), data];
+    localStorage.setItem('commands', JSON.stringify(newCommands));
+    setCommands_LS(newCommands);
+    setAdd_Dialog(false);
+    reset();
+  };
+
+  const deleteFn = (id: string) => {
+    const confirmed = confirm('Are you sure you want to continue?');
+    if (confirmed) {
+      const newCommands = commands_LS.filter(
+        (group: { id: string }) => group.id !== id,
+      );
+      localStorage.setItem('commands', JSON.stringify(newCommands));
+      setCommands_LS(newCommands);
+    }
   };
 
   return (
@@ -119,9 +134,11 @@ const CopyCommands = () => {
                     }[];
                   }) => (
                     <AccordionUnity
+                      id={group.id}
                       key={group?.id}
                       headerTitle={group.title}
                       value={`group-${group.id}`}
+                      deleteFn={deleteFn}
                     >
                       {group.list.map(
                         (item: {
@@ -161,7 +178,7 @@ const CopyCommands = () => {
                 Add a group of commands / strings
               </h3>
               <Controller
-                name="groupTitle"
+                name="title"
                 control={control}
                 render={({ field }) => (
                   <TextField.Root
@@ -173,7 +190,7 @@ const CopyCommands = () => {
                       field.onChange(e.target.value);
                       setValue(
                         'id',
-                        `${generateSlug(groupTitle || 'group', '-')}-${Date.now()}`,
+                        `${generateSlug(title || 'group', '-')}-${Date.now()}`,
                       );
                     }}
                   />
@@ -207,6 +224,7 @@ const CopyCommands = () => {
                   maxHeight: '230px',
                   overflowY: 'auto',
                   paddingRight: '10px',
+                  paddingTop: '1px',
                   borderBottom: 'solid 1px rgba(0,0,0,0.1)',
                   marginBottom: '15px',
                 }}
@@ -300,9 +318,7 @@ const CopyCommands = () => {
                   width: '100%',
                 }}
                 onClick={() => {}}
-                disabled={
-                  !fields.length || !listFields?.[0]?.command || !groupTitle
-                }
+                disabled={!fields.length || !listFields?.[0]?.command || !title}
               >
                 <span>Add a group of strings / commands</span>
               </Button>
