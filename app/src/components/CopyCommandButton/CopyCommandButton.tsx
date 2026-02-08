@@ -4,10 +4,11 @@ import {
   StyledCopyCommandLink,
 } from './CopyCommandButton.styles';
 import type { CopyCommandButtonProps } from './CopyCommandButton.types';
-import { MdOutlineHttp } from 'react-icons/md';
 import { toast } from 'react-toastify/unstyled';
 import { copyToClipboard } from '../../utils/utils';
-import { GoCommandPalette, GoLinkExternal } from 'react-icons/go';
+import { GoLinkExternal } from 'react-icons/go';
+import { PiLinkSimple } from 'react-icons/pi';
+import { IoIosArrowForward } from 'react-icons/io';
 
 export const CopyCommandButton = ({
   label,
@@ -23,25 +24,25 @@ export const CopyCommandButton = ({
       }}
     >
       <div style={{ width: 'calc(100% - 20px)' }}>
-        <div className="icon">{<GoCommandPalette />}</div>
+        <div className="icon">{<IoIosArrowForward />}</div>
         <span>
           <small className="hint">{hint}</small>
           <span>{label}</span>
         </span>
       </div>
-      <div>
-        <BsCopy size="15" />
+      <div className="secondary-icon">
+        <BsCopy size="16" />
       </div>
     </StyledCopyCommandButton>
   ) : (
     <StyledCopyCommandLink title={hint || label} href={label} target="_blank">
       <div style={{ width: 'calc(100% - 20px)' }}>
-        <div className="icon">{<MdOutlineHttp />}</div>
+        <div className="icon">{<PiLinkSimple />}</div>
         <span style={{ borderBottom: 'solid 1px rgba(0,0,0,0.15)' }}>
           {label}
         </span>
       </div>
-      <div>
+      <div className="secondary-icon">
         <GoLinkExternal size="17" />
       </div>
     </StyledCopyCommandLink>

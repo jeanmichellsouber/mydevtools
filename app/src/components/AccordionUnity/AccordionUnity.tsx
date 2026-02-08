@@ -10,6 +10,8 @@ export const AccordionUnity = ({
   children,
   headerTitle,
   value,
+  id,
+  deleteFn,
 }: AccordionUnityProps) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -51,7 +53,9 @@ export const AccordionUnity = ({
           <ContextMenu.Separator className="context-menu-separator" />
           <ContextMenu.Item
             className="context-menu-item delete"
-            onSelect={() => alert('Another Action')}
+            onSelect={() => {
+              deleteFn(id);
+            }}
           >
             <span>Delete group</span>
             <AiOutlineDelete />

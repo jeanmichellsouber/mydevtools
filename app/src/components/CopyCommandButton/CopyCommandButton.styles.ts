@@ -22,9 +22,12 @@ const styles = `
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px;
+    // margin-right: 10px;
     width: 30px;
     height: 100%;
+  }
+  .secondary-icon {
+    display: none;
   }
   svg {
     color: #38a3a5;
@@ -37,6 +40,9 @@ const styles = `
     //   svg {
     //     color: #fff;}
     // }
+    .secondary-icon {
+      display: flex;
+    }
   }
   &:active {
     background: #e8e8e8;
