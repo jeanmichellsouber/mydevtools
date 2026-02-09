@@ -61,13 +61,13 @@ const CopyCommands = () => {
     open: false,
     id: null,
   });
-  // const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
-  //   open: boolean;
-  //   id: string | null;
-  // }>({
-  //   open: false,
-  //   id: null,
-  // });
+  const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({
+    open: false,
+    id: null,
+  });
   const [importExport_Dialog, setImportExport_Dialog] =
     useState<boolean>(false);
   const [info_Dialog, setInfo_Dialog] = useState<boolean>(false);
@@ -97,6 +97,10 @@ const CopyCommands = () => {
     setCommands_LS(newCommands);
     setAdd_Dialog(false);
     reset();
+    toast(
+      'Group of commands added successfully to the end of the current list.',
+      { type: 'success' },
+    );
   };
 
   // functions related to the listing of groups of commands
@@ -109,6 +113,7 @@ const CopyCommands = () => {
     localStorage.removeItem('commands');
     setCommands_LS(null);
     setRemoveCommands_Dialog(false);
+    toast('All groups of commands deleted successfully!', { type: 'success' });
   };
 
   const duplicateFn = (id: string) => {
@@ -124,12 +129,11 @@ const CopyCommands = () => {
       const newCommands = [...(commands_LS || []), newGroup];
       localStorage.setItem('commands', JSON.stringify(newCommands));
       setCommands_LS(newCommands);
+      toast('Group of commands duplicated successfully!', { type: 'success' });
     }
   };
 
-  const editSpecificFn = (id: string) => {
-    alert(`Edit group with id: ${id}`);
-  };
+  const editSpecificFn = (id: string) => {};
 
   const exportData = () => {
     if (!commands_LS || commands_LS.length === 0) return;
@@ -475,7 +479,6 @@ const CopyCommands = () => {
                 style={{
                   width: '100%',
                 }}
-                onClick={() => {}}
                 disabled={!fields.length || !listFields?.[0]?.command || !title}
               >
                 <span>Save group of strings / commands</span>
