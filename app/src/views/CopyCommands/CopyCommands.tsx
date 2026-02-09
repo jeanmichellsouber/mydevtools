@@ -27,7 +27,7 @@ import { LiaPlusSolid } from 'react-icons/lia';
 import { generateSlug } from '../../utils/utils';
 import { MdInfoOutline } from 'react-icons/md';
 import { LuFileJson2 } from 'react-icons/lu';
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 
 // type definitions
 
@@ -61,13 +61,13 @@ const CopyCommands = () => {
     open: false,
     id: null,
   });
-  const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
-    open: boolean;
-    id: string | null;
-  }>({
-    open: false,
-    id: null,
-  });
+  // const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
+  //   open: boolean;
+  //   id: string | null;
+  // }>({
+  //   open: false,
+  //   id: null,
+  // });
   const [importExport_Dialog, setImportExport_Dialog] =
     useState<boolean>(false);
   const [info_Dialog, setInfo_Dialog] = useState<boolean>(false);
@@ -173,22 +173,26 @@ const CopyCommands = () => {
               : importedCommandsWithNewIds;
           localStorage.setItem('commands', JSON.stringify(newCommands));
           setCommands_LS(newCommands);
-          setImportExport_Dialog(false);
-          setImportExportFile(null);
-          resetImportExport();
+          toast.success(
+            `Data ${appendOrReplace === 'append' ? 'appended' : 'replaced'} successfully!`,
+          );
         } else {
-          // alert('teste');
-          toast.error('Error importing data: Invalid file structure.');
+          toast.error(
+            `Error importing data (${importExportFile?.name}): Invalid file structure.`,
+          ); // Show toast error
         }
       } catch (error) {
-        // alert('teste 2');
+        console.log('Error reading file:', error);
         toast.error(
           'Error reading file. Please make sure it is a valid JSON file.',
-        );
-        console.log('Error reading file:', error);
+        ); // Show toast error
       }
     };
     reader.readAsText(file);
+
+    setImportExport_Dialog(false);
+    setImportExportFile(null);
+    resetImportExport();
   };
 
   // functions related to the management of the Import Export Dialog
@@ -207,6 +211,8 @@ const CopyCommands = () => {
   const onSubmitImportExport: SubmitHandler<ImportExportValues> = data => {
     importData(data.file as File, data.appendOrReplace);
   };
+
+  // useeffects
 
   return (
     <>
@@ -298,6 +304,7 @@ const CopyCommands = () => {
                     {group?.list?.map(
                       (item: CommandsValues['list'][number]) => (
                         <CopyCommandButton
+                          key={item.command + Date.now()}
                           label={item.command}
                           type={item.link ? 'link' : 'command'}
                           hint={item.hint}
@@ -588,8 +595,7 @@ const CopyCommands = () => {
                   </p>
 
                   <Button
-                    color="blue"
-                    // variant="outline"
+                    className="gradient1"
                     style={{
                       display: 'flex',
                       width: '100%',
@@ -667,6 +673,9 @@ const CopyCommands = () => {
                             overflow: 'hidden',
                             position: 'absolute',
                             zIndex: -1,
+                          }}
+                          onClick={e => {
+                            e.target.value = null;
                           }}
                           onChange={e => {
                             const file = e.target.files?.[0];

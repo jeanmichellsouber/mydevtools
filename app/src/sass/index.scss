@@ -301,12 +301,13 @@ label {
 }
 
 .Toastify__toast--error {
-  background: linear-gradient(to right, #2d323a, #003e59);
+  background: linear-gradient(90deg, #da3f3f, #9f1212);
   zoom: 0.9;
+  color: #fff;
   .Toastify__progress-bar--error {
-    background: linear-gradient(90deg, #9cebed, #c7ffbc);
+    background: #fff;
   }
   svg {
-    fill: #c7ffbc;
+    fill: #fff;
   }
 }
