@@ -17,8 +17,10 @@ const SlugGenerator = () => {
 
   return (
     <>
-      <h1 className="gradientFont1">Slug Generator</h1>
-      <p>Create slugs based on your text. Perfect for URLs and branches.</p>
+      <div style={{ width: '890px', maxWidth: '100%', margin: '0 auto' }}>
+        <h1 className="gradientFont1">Slug Generator</h1>
+        <p>Create slugs based on your text. Perfect for URLs and branches.</p>
+      </div>
 
       <BlankWrapper>
         <h3 className="smallerHeading">Generate your slug</h3>

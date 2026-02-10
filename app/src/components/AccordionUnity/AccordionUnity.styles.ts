@@ -33,7 +33,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
       border-bottom: solid 1px #e9e9e9;
       height: 50px;
       width: 100%;
-      padding: 0 20px;
+      padding: 0 20px 0 10px;
       font-size: 16px;
       font-weight: 600;
       color: #000000;
@@ -49,6 +49,22 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
         background-color: #c5ffb9;
         > svg {
           transform: rotate(180deg);
+        }
+      }
+      .wrapper-header-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        span {
+          display: block;
+          svg {
+            display: block;
+          }
+          &.draggable-handle {
+            cursor: grab;
+            color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+          }
         }
       }
     }
@@ -77,7 +93,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
       color: inherit;
     }
     &:hover {
-      background-color: #006996;
+      background-color: rgb(25, 95, 114);
       color: #fff;
     }
     &.delete {

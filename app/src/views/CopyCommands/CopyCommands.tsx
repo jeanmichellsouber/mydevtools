@@ -28,6 +28,7 @@ import { generateSlug } from '../../utils/utils';
 import { MdInfoOutline } from 'react-icons/md';
 import { LuFileJson2 } from 'react-icons/lu';
 import { toast } from 'react-toastify/unstyled';
+import { ReactSortable } from 'react-sortablejs';
 
 // type definitions
 
@@ -223,12 +224,6 @@ const CopyCommands = () => {
 
   // functions related to the editing of groups of commands
 
-  // const {
-  //   control: controlEditing,
-  //   handleSubmit: handleSubmitEditing,
-  //   reset: resetEditing,
-  // } = useForm<CommandsValues>({});
-
   const editSpecificFn = (id: string) => {
     const groupToEdit = commands_LS.find(
       (group: { id: string }) => group.id === id,
@@ -243,28 +238,30 @@ const CopyCommands = () => {
 
   return (
     <>
-      <h1
-        className="gradientFont1"
-        style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-      >
-        Copy Commands{' '}
-        <MdInfoOutline
-          size="24"
-          role="button"
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            setInfo_Dialog(true);
-          }}
-        />
-      </h1>
-      <p>
-        Online tool to create and maintain lists of strings. So it's easy to
-        copy them by left-clicking.
-      </p>
-      <p>
-        Storing strings in:{' '}
-        <strong className="colorGreen1">Local Storage</strong>.
-      </p>
+      <div style={{ width: '890px', maxWidth: '100%', margin: '0 auto' }}>
+        <h1
+          className="gradientFont1"
+          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+        >
+          Copy Commands{' '}
+          <MdInfoOutline
+            size="24"
+            role="button"
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              setInfo_Dialog(true);
+            }}
+          />
+        </h1>
+        <p>
+          Online tool to create and maintain lists of strings. So it's easy to
+          copy them by left-clicking.
+        </p>
+        <p>
+          Storing strings in:{' '}
+          <strong className="colorGreen1">Local Storage</strong>.
+        </p>
+      </div>
       <BlankWrapper>
         <h3 className="smallerHeading">Management</h3>
         <div className="d-flex1">
@@ -308,7 +305,6 @@ const CopyCommands = () => {
                 <h3 className="smallerHeading">Listing</h3>
                 <small
                   style={{
-                    // margin: '-7px 0 10px 0',
                     display: 'block',
                     fontSize: '13px',
                     color: 'rgba(0,0,0,0.5)',
@@ -317,29 +313,44 @@ const CopyCommands = () => {
                   Right click over the header for actions.
                 </small>
               </div>
+
               <Accordion.Root type="single" collapsible>
-                {commands_LS.map((group: CommandsValues) => (
-                  <AccordionUnity
-                    id={group.id}
-                    key={group?.id}
-                    headerTitle={group.title}
-                    value={`group-${group.id}`}
-                    deleteSpecificFn={deleteSpecificFn}
-                    duplicateFn={duplicateFn}
-                    editSpecificFn={editSpecificFn}
-                  >
-                    {group?.list?.map(
-                      (item: CommandsValues['list'][number]) => (
-                        <CopyCommandButton
-                          key={item.command + Date.now()}
-                          label={item.command}
-                          type={item.link ? 'link' : 'command'}
-                          hint={item.hint}
-                        />
-                      ),
-                    )}
-                  </AccordionUnity>
-                ))}
+                <ReactSortable
+                  list={commands_LS}
+                  setList={newList => {
+                    setCommands_LS(newList);
+                    localStorage.setItem('commands', JSON.stringify(newList));
+                  }}
+                  onSort={() => {
+                    toast('New sorting of groups saved.', {
+                      type: 'success',
+                    });
+                  }}
+                  handle=".draggable-handle"
+                >
+                  {commands_LS.map((group: CommandsValues) => (
+                    <AccordionUnity
+                      id={group.id}
+                      key={group?.id}
+                      headerTitle={group.title}
+                      value={`group-${group.id}`}
+                      deleteSpecificFn={deleteSpecificFn}
+                      duplicateFn={duplicateFn}
+                      editSpecificFn={editSpecificFn}
+                    >
+                      {group?.list?.map(
+                        (item: CommandsValues['list'][number]) => (
+                          <CopyCommandButton
+                            key={item.command + Date.now()}
+                            label={item.command}
+                            type={item.link ? 'link' : 'command'}
+                            hint={item.hint}
+                          />
+                        ),
+                      )}
+                    </AccordionUnity>
+                  ))}
+                </ReactSortable>
               </Accordion.Root>
             </>
           ) : (
@@ -489,7 +500,7 @@ const CopyCommands = () => {
                   alignItems: 'center',
                   gap: '6px',
                 }}
-                color="gray"
+                color="blue"
                 onClick={() => append({ command: '', hint: '', link: false })}
               >
                 <LiaPlusSolid /> Add new row{' '}
@@ -779,7 +790,7 @@ const CopyCommands = () => {
 
           {/* Info Dialog */}
           <Dialog open={info_Dialog}>
-            <h3 className="gradientFont1">Information</h3>
+            <h3 className="gradientFont1">About Copy Commands</h3>
             <p>
               This tool allows you to create and manage lists of strings or
               commands that you can easily copy to your clipboard by
