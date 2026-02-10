@@ -5,6 +5,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 import { IoDuplicateOutline } from 'react-icons/io5';
 import { FiEdit3 } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { RiDraggable } from 'react-icons/ri';
 
 export const AccordionUnity = ({
   children,
@@ -32,7 +33,15 @@ export const AccordionUnity = ({
                 scrollToTop();
               }}
             >
-              {headerTitle} <IoIosArrowDown />
+              <>
+                <div className="wrapper-header-content">
+                  <span className="draggable-handle">
+                    <RiDraggable />
+                  </span>
+                  <span className="title-of-the-group">{headerTitle}</span>
+                </div>
+                <IoIosArrowDown />
+              </>
             </Accordion.Trigger>
           </Accordion.Header>
         </ContextMenu.Trigger>

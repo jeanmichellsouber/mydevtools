@@ -2,6 +2,7 @@ import { MainHeader } from './components/MainHeader';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import CopyCommands from './views/CopyCommands/CopyCommands';
 import Flexplanation from './views/Flexplanation/Flexplanation';
+import NotFound from './views/NotFound/NotFound';
 import SlugGenerator from './views/SlugGenerator/SlugGenerator';
 import CustomTooltip from './components/CustomTooltip/CustomTooltip';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,6 +64,7 @@ const App = () => {
               <Route path="/" element={<CopyCommands />} />
               <Route path="/slug-generator" element={<SlugGenerator />} />
               <Route path="/flexplanation" element={<Flexplanation />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>
