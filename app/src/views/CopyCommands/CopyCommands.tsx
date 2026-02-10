@@ -51,17 +51,13 @@ const CopyCommands = () => {
   const [commands_LS, setCommands_LS] = useState(
     JSON.parse(localStorage.getItem('commands') || 'null'),
   );
-  const [add_Dialog, setAdd_Dialog] = useState<boolean>(false);
+  const [add_edit_dialog, setAdd_edit_dialog] = useState<{
+    visible: boolean;
+    upsert: string | null;
+  }>({ visible: false, upsert: null });
   const [removeCommands_Dialog, setRemoveCommands_Dialog] =
     useState<boolean>(false);
   const [removeCommand_Dialog, setRemoveCommand_Dialog] = useState<{
-    open: boolean;
-    id: string | null;
-  }>({
-    open: false,
-    id: null,
-  });
-  const [editCommand_Dialog, setEditCommand_Dialog] = useState<{
     open: boolean;
     id: string | null;
   }>({
@@ -92,15 +88,26 @@ const CopyCommands = () => {
   const listFields = useWatch({ control, name: 'list' });
 
   const onSubmit: SubmitHandler<CommandsValues> = data => {
-    const newCommands = [...(commands_LS || []), data];
-    localStorage.setItem('commands', JSON.stringify(newCommands));
-    setCommands_LS(newCommands);
-    setAdd_Dialog(false);
-    reset();
-    toast(
-      'Group of commands added successfully to the end of the current list.',
-      { type: 'success' },
-    );
+    if (add_edit_dialog.upsert === 'edit') {
+      const newCommands = commands_LS.map((group: { id: string }) =>
+        group.id === data.id ? data : group,
+      );
+      localStorage.setItem('commands', JSON.stringify(newCommands));
+      setCommands_LS(newCommands);
+      setAdd_edit_dialog({ visible: false, upsert: null });
+      reset({ list: [] });
+      toast('Group of commands edited successfully!', { type: 'success' });
+    } else {
+      const newCommands = [...(commands_LS || []), data];
+      localStorage.setItem('commands', JSON.stringify(newCommands));
+      setCommands_LS(newCommands);
+      setAdd_edit_dialog({ visible: false, upsert: null });
+      reset({ list: [] });
+      toast(
+        'Group of commands added successfully to the end of the current list.',
+        { type: 'success' },
+      );
+    }
   };
 
   // functions related to the listing of groups of commands
@@ -132,8 +139,6 @@ const CopyCommands = () => {
       toast('Group of commands duplicated successfully!', { type: 'success' });
     }
   };
-
-  const editSpecificFn = (id: string) => {};
 
   const exportData = () => {
     if (!commands_LS || commands_LS.length === 0) return;
@@ -216,6 +221,24 @@ const CopyCommands = () => {
     importData(data.file as File, data.appendOrReplace);
   };
 
+  // functions related to the editing of groups of commands
+
+  // const {
+  //   control: controlEditing,
+  //   handleSubmit: handleSubmitEditing,
+  //   reset: resetEditing,
+  // } = useForm<CommandsValues>({});
+
+  const editSpecificFn = (id: string) => {
+    const groupToEdit = commands_LS.find(
+      (group: { id: string }) => group.id === id,
+    );
+    if (groupToEdit) {
+      reset(groupToEdit);
+      setAdd_edit_dialog({ visible: true, upsert: 'edit' });
+    }
+  };
+
   // useeffects
 
   return (
@@ -250,7 +273,7 @@ const CopyCommands = () => {
             icon={<BsTerminal />}
             color="#38A3A5"
             onClick={() => {
-              setAdd_Dialog(true);
+              setAdd_edit_dialog({ visible: true, upsert: 'add' });
             }}
           />
           <ManagementButton
@@ -332,11 +355,12 @@ const CopyCommands = () => {
           )}
         </div>
         <div>
-          {/* add new groups of commands */}
-          <Dialog open={add_Dialog} size="large">
+          {/* add or edit new groups of commands */}
+          <Dialog open={add_edit_dialog.visible} size="large">
             <form onSubmit={handleSubmit(onSubmit)}>
               <h3 className="gradientFont1">
-                Add a group of commands / strings
+                {add_edit_dialog.upsert === 'add' ? 'Add' : 'Edit'} a group of
+                commands / strings
               </h3>
               <Controller
                 name="title"
@@ -349,10 +373,12 @@ const CopyCommands = () => {
                     placeholder="Group title"
                     onBlur={e => {
                       field.onChange(e.target.value);
-                      setValue(
-                        'id',
-                        `${generateSlug(title || 'group', '-')}-${Date.now()}`,
-                      );
+                      if (add_edit_dialog.upsert === 'add') {
+                        setValue(
+                          'id',
+                          `${generateSlug(title || 'group', '-')}-${Date.now()}`,
+                        );
+                      }
                     }}
                   />
                 )}
@@ -487,8 +513,8 @@ const CopyCommands = () => {
                 <small>
                   <a
                     onClick={e => {
-                      setAdd_Dialog(false);
-                      reset();
+                      setAdd_edit_dialog({ visible: false, upsert: null });
+                      reset({ list: [] });
                       e.preventDefault();
                     }}
                     className="red-link"
@@ -559,8 +585,18 @@ const CopyCommands = () => {
                   );
                   localStorage.setItem('commands', JSON.stringify(newCommands));
                   setCommands_LS(newCommands);
-
                   setRemoveCommand_Dialog({ open: false, id: null });
+                  toast(
+                    `Group of commands ${
+                      commands_LS?.find(
+                        (group: { id: string }) =>
+                          group.id === removeCommand_Dialog.id,
+                      )?.title || ''
+                    } deleted successfully!`,
+                    {
+                      type: 'success',
+                    },
+                  );
                 }}
               >
                 <RiDeleteBin7Line /> Yes, delete it
