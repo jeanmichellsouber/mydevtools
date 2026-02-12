@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npm install && vite"
+    "start": "npm install && vite",
+    "create:component": "node scripts/createComponent.js"
   },
   "dependencies": {
     "@radix-ui/themes": "^3.3.0",

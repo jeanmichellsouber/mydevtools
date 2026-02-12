@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { headerHeight } from '../../utils/utils';
 
 export const StyledMainHeader = styled.header`
-  height: 60px;
+  height: ${headerHeight}px;
   width: 100%;
   display: flex;
   justify-content: space-between;

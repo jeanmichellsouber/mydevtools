@@ -1,7 +1,9 @@
+import { Center } from '../../components/Center';
+
 const Flexplanation = () => {
   return (
     <>
-      <div style={{ width: '890px', maxWidth: '100%', margin: '0 auto' }}>
+      <Center>
         <h1 className="gradientFont1">Flexplanation</h1>
         <p>
           Explanation and examples for the{' '}
@@ -10,7 +12,7 @@ const Flexplanation = () => {
         <p>
           Don't worry about memorizing CSS rules. Just get them here quickly!
         </p>
-      </div>
+      </Center>
     </>
   );
 };

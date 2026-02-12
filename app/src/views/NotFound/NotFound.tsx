@@ -1,9 +1,10 @@
 import { BiError } from 'react-icons/bi';
 import { BlankWrapper } from '../../components/BlankWrapper';
+import { Center } from '../../components/Center';
 
 const NotFound = () => {
   return (
-    <>
+    <Center>
       <BlankWrapper>
         <>
           <div style={{ textAlign: 'center', padding: '40px 0' }}>
@@ -18,7 +19,7 @@ const NotFound = () => {
           </div>
         </>
       </BlankWrapper>
-    </>
+    </Center>
   );
 };
 

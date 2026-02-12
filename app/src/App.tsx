@@ -9,12 +9,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify/unstyled';
 import { Slide } from 'react-toastify';
 import { GoSmiley } from 'react-icons/go';
+import { Main } from './components/Main';
 
 const App = () => {
   return (
     <>
       <MainHeader />
-      <main>
+      <Main>
         <aside>
           <nav>
             <ul>
@@ -68,7 +69,7 @@ const App = () => {
             </Routes>
           </div>
         </div>
-      </main>
+      </Main>
       <ToastContainer
         position="bottom-right"
         autoClose={5000}
