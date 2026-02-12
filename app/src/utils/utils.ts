@@ -13,3 +13,5 @@ export const copyToClipboard = (text: string): void => {
     console.error('Could not copy text: ', err);
   });
 };
+
+export const headerHeight = 60; // Example header height in pixels
