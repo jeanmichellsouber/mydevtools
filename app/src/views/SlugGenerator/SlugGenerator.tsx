@@ -75,6 +75,7 @@ const SlugGenerator = () => {
               className="gradient1"
               style={{
                 width: '100%',
+                minHeight: '45px',
               }}
               disabled={invalidInput}
               onClick={() => {

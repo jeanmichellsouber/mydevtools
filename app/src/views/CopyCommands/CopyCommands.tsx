@@ -446,9 +446,9 @@ const CopyCommands = () => {
                               type="button"
                               onClick={() => remove(index)}
                               variant="outline"
-                              size="1"
+                              size="2"
                               color="red"
-                              style={{ borderRadius: '100px', padding: '6px' }}
+                              style={{ borderRadius: '100px', padding: '9px' }}
                               title="Click to remove this row of values"
                             >
                               <IoMdRemove />
@@ -459,7 +459,7 @@ const CopyCommands = () => {
                               render={({ field }) => (
                                 <TextField.Root
                                   {...field}
-                                  size="2"
+                                  size="3"
                                   placeholder="String / command"
                                   required
                                   style={{
@@ -480,7 +480,7 @@ const CopyCommands = () => {
                               render={({ field }) => (
                                 <TextField.Root
                                   {...field}
-                                  size="2"
+                                  size="3"
                                   placeholder="Hint"
                                   style={{ flexGrow: 1 }}
                                 />
@@ -509,14 +509,14 @@ const CopyCommands = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  size="2"
+                  size="3"
                   style={{
                     margin: '0 auto',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
                   }}
-                  color="blue"
+                  color="cyan"
                   onClick={() => append({ command: '', hint: '', link: false })}
                 >
                   <LiaPlusSolid /> Add new row{' '}
@@ -527,10 +527,11 @@ const CopyCommands = () => {
                 <Button
                   size="3"
                   variant="solid"
-                  color="blue"
+                  color="cyan"
                   className="gradient1"
                   style={{
                     width: '100%',
+                    minHeight: '45px',
                   }}
                   disabled={
                     !fields.length || !listFields?.[0]?.command || !title
@@ -664,6 +665,17 @@ const CopyCommands = () => {
                       Export a file <span className="colorGreen1">(.json)</span>{' '}
                       containing the list of commands, to import in another
                       browser.
+                    </p>
+
+                    <p>
+                      <small>
+                        {commands_LS
+                          ? commands_LS
+                              .map((group: { title: string }) => group.title)
+                              .join(', ')
+                          : 0}{' '}
+                        group(s) available
+                      </small>
                     </p>
 
                     <Button
