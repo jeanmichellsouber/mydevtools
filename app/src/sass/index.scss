@@ -192,6 +192,11 @@ input[type='submit'] {
   pointer-events: none;
 }
 
+*[data-error='true'] {
+  border: solid 1px #da3f3f !important;
+  // background-color: rgba(218, 63, 63, 0.05);
+}
+
 label {
   padding: 5px 8px;
   // border-radius: 5px;

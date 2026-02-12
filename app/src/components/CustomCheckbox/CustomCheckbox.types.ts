@@ -3,4 +3,5 @@ export interface CustomCheckboxProps {
   icon?: React.ReactNode;
   color?: string;
   onChange?: () => void;
+  checked?: boolean;
 }

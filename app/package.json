@@ -12,6 +12,7 @@
     "create:component": "node scripts/createComponent.js"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@radix-ui/themes": "^3.3.0",
     "radix-ui": "^1.4.3",
     "react": "^19.2.0",
