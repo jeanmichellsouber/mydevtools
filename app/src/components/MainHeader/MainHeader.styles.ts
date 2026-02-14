@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { headerHeight } from '../../utils/utils';
+import { headerHeight } from '@/utils/utils';
 
 export const StyledMainHeader = styled.header`
   height: ${headerHeight}px;

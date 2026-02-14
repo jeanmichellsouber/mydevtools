@@ -1,5 +1,5 @@
 import { StyledMainHeader } from './MainHeader.styles';
-import MyDevToolsLogo from '../../assets/images/mydevtools.svg';
+import MyDevToolsLogo from '@/assets/images/mydevtools.svg';
 
 export const MainHeader = () => {
   return (

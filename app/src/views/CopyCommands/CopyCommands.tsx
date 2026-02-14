@@ -1,6 +1,6 @@
 import { BsLink45Deg, BsTerminal } from 'react-icons/bs';
-import { BlankWrapper } from '../../components/BlankWrapper';
-import { ManagementButton } from '../../components/ManagementButton';
+import { BlankWrapper } from '@/components/BlankWrapper';
+import { ManagementButton } from '@/components/ManagementButton';
 import {
   PiArrowsDownUpLight,
   PiDownloadSimple,
@@ -8,12 +8,12 @@ import {
 } from 'react-icons/pi';
 import { RiDeleteBin7Line } from 'react-icons/ri';
 import * as Accordion from '@radix-ui/react-accordion';
-import { AccordionUnity } from '../../components/AccordionUnity';
-import { CopyCommandButton } from '../../components/CopyCommandButton';
-import { Dialog } from '../../components/Dialog';
+import { AccordionUnity } from '@/components/AccordionUnity';
+import { CopyCommandButton } from '@/components/CopyCommandButton';
+import { Dialog } from '@/components/Dialog';
 import { useState } from 'react';
 import { Button, Flex, Radio, Text, TextField } from '@radix-ui/themes';
-import { CustomCheckbox } from '../../components/CustomCheckbox';
+import { CustomCheckbox } from '@/components/CustomCheckbox';
 import {
   Controller,
   useForm,
@@ -24,24 +24,34 @@ import {
 import { VscEmptyWindow } from 'react-icons/vsc';
 import { IoMdRemove } from 'react-icons/io';
 import { LiaPlusSolid } from 'react-icons/lia';
-import { generateSlug } from '../../utils/utils';
+import { generateSlug } from '@/utils/utils';
 import { MdInfoOutline } from 'react-icons/md';
 import { LuFileJson2 } from 'react-icons/lu';
 import { toast } from 'react-toastify/unstyled';
 import { ReactSortable } from 'react-sortablejs';
-import { Center } from '../../components/Center';
+import { Center } from '@/components/Center';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod/src/index.js';
+
+// ZOD schemas
+
+export const commandsSchema = z.object({
+  title: z.string().min(1, 'Group title is required'),
+  id: z.string().min(1, 'ID is required'),
+  list: z
+    .array(
+      z.object({
+        command: z.string().min(1, 'Command / string is required'),
+        hint: z.string(), // not required
+        link: z.boolean(),
+      }),
+    )
+    .min(1, 'At least one command is required'),
+});
 
 // type definitions
 
-type CommandsValues = {
-  title: string;
-  id: string;
-  list: {
-    command: string;
-    hint: string;
-    link: boolean;
-  }[];
-};
+type CommandsValues = z.infer<typeof commandsSchema>;
 
 type ImportExportValues = {
   appendOrReplace: 'append' | 'replace';
@@ -73,14 +83,22 @@ const CopyCommands = () => {
 
   // functions related to the creation of groups of commands
 
-  const { control, handleSubmit, setValue, reset, getValues } =
-    useForm<CommandsValues>({
-      defaultValues: {
-        title: '',
-        id: '',
-        list: [],
-      },
-    });
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    getValues,
+    formState: { errors, isValid },
+  } = useForm<CommandsValues>({
+    resolver: zodResolver(commandsSchema),
+    mode: 'onChange',
+    defaultValues: {
+      title: '',
+      id: '',
+      list: [],
+    },
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -379,21 +397,29 @@ const CopyCommands = () => {
                   name="title"
                   control={control}
                   render={({ field }) => (
-                    <TextField.Root
-                      {...field}
-                      autoFocus
-                      size="3"
-                      placeholder="Group title"
-                      onBlur={e => {
-                        field.onChange(e.target.value);
-                        if (add_edit_dialog.upsert === 'add') {
-                          setValue(
-                            'id',
-                            `${generateSlug(title || 'group', '-')}-${Date.now()}`,
-                          );
-                        }
-                      }}
-                    />
+                    <>
+                      <TextField.Root
+                        {...field}
+                        autoFocus
+                        size="3"
+                        placeholder="Group title"
+                        onBlur={e => {
+                          field.onChange(e.target.value);
+                          if (add_edit_dialog.upsert === 'add') {
+                            setValue(
+                              'id',
+                              `${generateSlug(title || 'group', '-')}-${Date.now()}`,
+                            );
+                          }
+                        }}
+                        data-error={errors.title ? 'true' : 'false'}
+                      />
+                      {errors.title && (
+                        <p className="colorRed1">
+                          <small>{errors.title.message}</small>
+                        </p>
+                      )}
+                    </>
                   )}
                 />
                 <Controller
@@ -432,76 +458,80 @@ const CopyCommands = () => {
                   {fields.map((field, index) => {
                     const linkValue = getValues(`list.${index}.link`);
                     return (
-                      <>
-                        <div key={field.id}>
-                          <div
-                            style={{
-                              display: 'flex',
-                              gap: '10px',
-                              alignItems: 'center',
-                              marginBottom: '10px',
-                            }}
+                      <div key={field.id}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '10px',
+                            alignItems: 'center',
+                            marginBottom: '10px',
+                          }}
+                        >
+                          <Button
+                            type="button"
+                            onClick={() => remove(index)}
+                            variant="outline"
+                            size="2"
+                            color="red"
+                            style={{ borderRadius: '100px', padding: '9px' }}
+                            title="Click to remove this row of values"
                           >
-                            <Button
-                              type="button"
-                              onClick={() => remove(index)}
-                              variant="outline"
-                              size="2"
-                              color="red"
-                              style={{ borderRadius: '100px', padding: '9px' }}
-                              title="Click to remove this row of values"
-                            >
-                              <IoMdRemove />
-                            </Button>
-                            <Controller
-                              name={`list.${index}.command`}
-                              control={control}
-                              render={({ field }) => (
-                                <TextField.Root
-                                  {...field}
-                                  size="3"
-                                  placeholder="String / command"
-                                  required
-                                  style={{
-                                    flexGrow: 3,
-                                    color: linkValue
-                                      ? 'rgb(56, 163, 165)'
-                                      : 'inherit',
-                                    textDecoration: linkValue
-                                      ? 'underline'
-                                      : 'none',
-                                  }}
-                                />
-                              )}
-                            />
-                            <Controller
-                              name={`list.${index}.hint`}
-                              control={control}
-                              render={({ field }) => (
-                                <TextField.Root
-                                  {...field}
-                                  size="3"
-                                  placeholder="Hint"
-                                  style={{ flexGrow: 1 }}
-                                />
-                              )}
-                            />
-                            <Controller
-                              name={`list.${index}.link`}
-                              control={control}
-                              render={({ field }) => (
-                                <CustomCheckbox
-                                  {...field}
-                                  label="Click to turn this string into a hyperlink (_blank)"
-                                  icon={<BsLink45Deg />}
-                                  color="#9CEBED"
-                                  checked={field.value}
-                                />
-                              )}
-                            />
-                          </div>
+                            <IoMdRemove />
+                          </Button>
+                          <Controller
+                            name={`list.${index}.command`}
+                            control={control}
+                            render={({ field }) => (
+                              <TextField.Root
+                                {...field}
+                                size="3"
+                                placeholder={
+                                  linkValue ? 'https://' : 'Command / String'
+                                }
+                                style={{
+                                  flexGrow: 3,
+                                  color: linkValue
+                                    ? 'rgb(56, 163, 165)'
+                                    : 'inherit',
+                                  textDecoration: linkValue
+                                    ? 'underline'
+                                    : 'none',
+                                }}
+                                data-error={
+                                  errors.list?.[index]?.command
+                                    ? 'true'
+                                    : 'false'
+                                }
+                              />
+                            )}
+                          />
+                          <Controller
+                            name={`list.${index}.hint`}
+                            control={control}
+                            render={({ field }) => (
+                              <TextField.Root
+                                {...field}
+                                size="3"
+                                placeholder="Hint"
+                                style={{ flexGrow: 1 }}
+                              />
+                            )}
+                          />
+                          <Controller
+                            name={`list.${index}.link`}
+                            control={control}
+                            render={({ field }) => (
+                              <CustomCheckbox
+                                {...field}
+                                label="Click to turn this string into a hyperlink (_blank)"
+                                icon={<BsLink45Deg />}
+                                color="#9CEBED"
+                                checked={field.value}
+                              />
+                            )}
+                          />
                         </div>
-                      </>
+                      </div>
                     );
                   })}
                 </div>
@@ -534,7 +564,8 @@ const CopyCommands = () => {
                     minHeight: '45px',
                   }}
                   disabled={
-                    !fields.length || !listFields?.[0]?.command || !title
+                    // !fields.length || !listFields?.[0]?.command || !title
+                    !isValid
                   }
                 >
                   <span>Save group of strings / commands</span>
@@ -667,7 +698,7 @@ const CopyCommands = () => {
                       browser.
                     </p>
 
-                    <p>
+                    {/* <p>
                       <small>
                         {commands_LS
                           ? commands_LS
@@ -676,7 +707,7 @@ const CopyCommands = () => {
                           : 0}{' '}
                         group(s) available
                       </small>
-                    </p>
+                    </p> */}
 
                     <Button
                       className="gradient1"

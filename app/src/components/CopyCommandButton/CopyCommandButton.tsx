@@ -5,7 +5,7 @@ import {
 } from './CopyCommandButton.styles';
 import type { CopyCommandButtonProps } from './CopyCommandButton.types';
 import { toast } from 'react-toastify/unstyled';
-import { copyToClipboard } from '../../utils/utils';
+import { copyToClipboard } from '@/utils/utils';
 import { GoLinkExternal } from 'react-icons/go';
 import { PiLinkSimple } from 'react-icons/pi';
 import { IoIosArrowForward } from 'react-icons/io';
