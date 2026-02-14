@@ -6,13 +6,16 @@ import '@radix-ui/themes/styles.css';
 import './sass/index.scss';
 import './sass/customTheme.scss';
 import { BrowserRouter } from 'react-router-dom';
+import { AppProvider } from './providers/AppProvider/AppProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Theme accentColor="blue">
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Theme>
+    <AppProvider>
+      <Theme accentColor="blue">
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Theme>
+    </AppProvider>
   </StrictMode>,
 );

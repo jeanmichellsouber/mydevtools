@@ -9,14 +9,17 @@ import { copyToClipboard } from '@/utils/utils';
 import { GoLinkExternal } from 'react-icons/go';
 import { PiLinkSimple } from 'react-icons/pi';
 import { IoIosArrowForward } from 'react-icons/io';
+import { useApp } from '@/providers/AppProvider/AppProvider';
 
 export const CopyCommandButton = ({
   label,
   type,
   hint,
 }: CopyCommandButtonProps) => {
+  const { contextState } = useApp();
   return type === 'command' ? (
     <StyledCopyCommandButton
+      theme={contextState.theme}
       title={hint || label}
       onClick={() => {
         copyToClipboard(label);
@@ -35,7 +38,12 @@ export const CopyCommandButton = ({
       </div>
     </StyledCopyCommandButton>
   ) : (
-    <StyledCopyCommandLink title={hint || label} href={label} target="_blank">
+    <StyledCopyCommandLink
+      title={hint || label}
+      href={label}
+      target="_blank"
+      theme={contextState.theme}
+    >
       <div style={{ width: 'calc(100% - 20px)' }}>
         <div className="icon">{<PiLinkSimple />}</div>
         <span style={{ borderBottom: 'solid 1px rgba(0,0,0,0.15)' }}>

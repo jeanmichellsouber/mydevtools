@@ -10,10 +10,14 @@ import { ToastContainer } from 'react-toastify/unstyled';
 import { Slide } from 'react-toastify';
 import { GoSmiley } from 'react-icons/go';
 import { Main } from './components/Main';
+import { useApp } from './providers/AppProvider/AppProvider';
 
 const App = () => {
+  const { contextState } = useApp();
   return (
-    <>
+    <div
+      className={contextState.theme === 'dark' ? 'dark-theme' : 'light-theme'}
+    >
       <MainHeader />
       <Main>
         <aside>
@@ -83,7 +87,7 @@ const App = () => {
         theme="dark"
         transition={Slide}
       />
-    </>
+    </div>
   );
 };
 

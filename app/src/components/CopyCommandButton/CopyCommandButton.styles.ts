@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const styles = `
-  background: #fff;
+const styles = (props: { theme?: 'light' | 'dark' }) => `
+  background: ${props.theme === 'dark' ? '#252525' : '#fff'};
   height: 35px;
   display: flex;
   width: 100%;
@@ -34,18 +34,13 @@ const styles = `
     display: block;
   }
   &:hover {
-    background: #f1f1f1;
-    // .icon {
-    //   background-color: #38a3a5;
-    //   svg {
-    //     color: #fff;}
-    // }
+    background: ${props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#f1f1f1'};
     .secondary-icon {
       display: flex;
     }
   }
   &:active {
-    background: #e8e8e8;
+    background: ${props.theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#e8e8e8'};
   }
 
   .hint {
@@ -53,13 +48,13 @@ const styles = `
     letter-spacing: 1px;
     text-transform: uppercase;
     display: block;
-    color: #777;
+    color: ${props.theme === 'dark' ? '#aaa' : 'rgba(0, 0, 0, 0.5)'};
     margin-bottom: -1px;
     // font-family: 'Courier New', serif !important;
   }
 
   span {
-    color: #111;
+    color: ${props.theme === 'dark' ? '#fff' : '#111'};
     font-weight: 500;
     font-family: 'Courier New', serif !important;
     font-size: 14px;
