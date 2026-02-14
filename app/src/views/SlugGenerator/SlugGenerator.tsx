@@ -1,11 +1,11 @@
 import { Button, Flex, Radio, Text, TextField } from '@radix-ui/themes';
-import { BlankWrapper } from '../../components/BlankWrapper';
-import { copyToClipboard, generateSlug } from '../../utils/utils';
+import { BlankWrapper } from '@/components/BlankWrapper';
+import { copyToClipboard, generateSlug } from '@/utils/utils';
 import { BsCopy } from 'react-icons/bs';
 import { useState } from 'react';
-import CustomTooltip from '../../components/CustomTooltip/CustomTooltip';
+import CustomTooltip from '@/components/CustomTooltip/CustomTooltip';
 import { toast } from 'react-toastify/unstyled';
-import { Center } from '../../components/Center';
+import { Center } from '@/components/Center';
 
 const SlugGenerator = () => {
   const [inputText, setInputText] = useState<string>('');

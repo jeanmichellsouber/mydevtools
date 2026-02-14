@@ -1,6 +1,6 @@
 import { BiError } from 'react-icons/bi';
-import { BlankWrapper } from '../../components/BlankWrapper';
-import { Center } from '../../components/Center';
+import { BlankWrapper } from '@/components/BlankWrapper';
+import { Center } from '@/components/Center';
 
 const NotFound = () => {
   return (

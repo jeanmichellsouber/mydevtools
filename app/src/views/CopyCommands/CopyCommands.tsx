@@ -1,6 +1,6 @@
 import { BsLink45Deg, BsTerminal } from 'react-icons/bs';
-import { BlankWrapper } from '../../components/BlankWrapper';
-import { ManagementButton } from '../../components/ManagementButton';
+import { BlankWrapper } from '@/components/BlankWrapper';
+import { ManagementButton } from '@/components/ManagementButton';
 import {
   PiArrowsDownUpLight,
   PiDownloadSimple,
@@ -8,12 +8,12 @@ import {
 } from 'react-icons/pi';
 import { RiDeleteBin7Line } from 'react-icons/ri';
 import * as Accordion from '@radix-ui/react-accordion';
-import { AccordionUnity } from '../../components/AccordionUnity';
-import { CopyCommandButton } from '../../components/CopyCommandButton';
-import { Dialog } from '../../components/Dialog';
+import { AccordionUnity } from '@/components/AccordionUnity';
+import { CopyCommandButton } from '@/components/CopyCommandButton';
+import { Dialog } from '@/components/Dialog';
 import { useState } from 'react';
 import { Button, Flex, Radio, Text, TextField } from '@radix-ui/themes';
-import { CustomCheckbox } from '../../components/CustomCheckbox';
+import { CustomCheckbox } from '@/components/CustomCheckbox';
 import {
   Controller,
   useForm,
@@ -24,12 +24,12 @@ import {
 import { VscEmptyWindow } from 'react-icons/vsc';
 import { IoMdRemove } from 'react-icons/io';
 import { LiaPlusSolid } from 'react-icons/lia';
-import { generateSlug } from '../../utils/utils';
+import { generateSlug } from '@/utils/utils';
 import { MdInfoOutline } from 'react-icons/md';
 import { LuFileJson2 } from 'react-icons/lu';
 import { toast } from 'react-toastify/unstyled';
 import { ReactSortable } from 'react-sortablejs';
-import { Center } from '../../components/Center';
+import { Center } from '@/components/Center';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod/src/index.js';
 
@@ -50,16 +50,6 @@ export const commandsSchema = z.object({
 });
 
 // type definitions
-
-// type CommandsValues = {
-//   title: string;
-//   id: string;
-//   list: {
-//     command: string;
-//     hint?: string;
-//     link: boolean;
-//   }[];
-// };
 
 type CommandsValues = z.infer<typeof commandsSchema>;
 
@@ -102,7 +92,7 @@ const CopyCommands = () => {
     formState: { errors, isValid },
   } = useForm<CommandsValues>({
     resolver: zodResolver(commandsSchema),
-    // mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       title: '',
       id: '',
@@ -708,7 +698,7 @@ const CopyCommands = () => {
                       browser.
                     </p>
 
-                    <p>
+                    {/* <p>
                       <small>
                         {commands_LS
                           ? commands_LS
@@ -717,7 +707,7 @@ const CopyCommands = () => {
                           : 0}{' '}
                         group(s) available
                       </small>
-                    </p>
+                    </p> */}
 
                     <Button
                       className="gradient1"
