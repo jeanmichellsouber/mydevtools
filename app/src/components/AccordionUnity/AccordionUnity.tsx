@@ -6,6 +6,7 @@ import { IoDuplicateOutline } from 'react-icons/io5';
 import { FiEdit3 } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { RiDraggable } from 'react-icons/ri';
+import { useApp } from '@/providers/AppProvider/AppProvider';
 
 export const AccordionUnity = ({
   children,
@@ -16,23 +17,16 @@ export const AccordionUnity = ({
   duplicateFn,
   editSpecificFn,
 }: AccordionUnityProps) => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const { contextState } = useApp();
   return (
-    <StyledAccordionUnity value={value}>
+    <StyledAccordionUnity value={value} theme={contextState.theme}>
       <ContextMenu.Root>
         <ContextMenu.Trigger>
           <Accordion.Header
             className="accordion-header"
             title="Right click for actions"
           >
-            <Accordion.Trigger
-              className="accordion-trigger"
-              onClick={() => {
-                scrollToTop();
-              }}
-            >
+            <Accordion.Trigger className="accordion-trigger">
               <>
                 <div className="wrapper-header-content">
                   <span className="draggable-handle">

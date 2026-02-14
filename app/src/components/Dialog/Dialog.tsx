@@ -1,7 +1,9 @@
+import { useApp } from '@/providers/AppProvider/AppProvider';
 import { StyledDialog } from './Dialog.styles';
 import type { DialogProps } from './Dialog.types';
 
 export const Dialog = ({ children, open = false, size }: DialogProps) => {
+  const { contextState } = useApp();
   const getSizeStyles = () => {
     switch (size) {
       case 'small':
@@ -16,7 +18,10 @@ export const Dialog = ({ children, open = false, size }: DialogProps) => {
   };
 
   return (
-    <StyledDialog style={{ display: open ? 'flex' : 'none' }}>
+    <StyledDialog
+      style={{ display: open ? 'flex' : 'none' }}
+      theme={contextState.theme}
+    >
       <div className="content" style={getSizeStyles()}>
         <div className="inner-content">{children}</div>
       </div>

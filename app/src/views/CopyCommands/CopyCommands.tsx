@@ -323,15 +323,7 @@ const CopyCommands = () => {
                   }}
                 >
                   <h3 className="smallerHeading">Listing</h3>
-                  <small
-                    style={{
-                      display: 'block',
-                      fontSize: '13px',
-                      color: 'rgba(0,0,0,0.5)',
-                    }}
-                  >
-                    Right click over the header for actions.
-                  </small>
+                  <small>Right click over the header for actions.</small>
                 </div>
 
                 <Accordion.Root type="single" collapsible>
@@ -803,20 +795,7 @@ const CopyCommands = () => {
                             }}
                           />
 
-                          <p
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              border: 'dashed 2px rgba(0,0,0,0.3)',
-                              padding: '3px 10px',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                              justifyContent: 'center',
-                              fontSize: '14px',
-                              margin: '5px 0',
-                            }}
-                          >
+                          <p className="dashed-style">
                             {importExportFile
                               ? importExportFile.name
                               : 'Select a .json file'}{' '}

@@ -28,25 +28,28 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #fff;
+      background-color: ${props => (props.theme === 'dark' ? '#333' : '#fff')};
       border: none;
-      border-bottom: solid 1px #e9e9e9;
+      border-bottom: solid 1px
+        ${props => (props.theme === 'dark' ? '#000' : '#d5d5d5')};
       height: 50px;
       width: 100%;
       padding: 0 20px 0 10px;
       font-size: 16px;
       font-weight: 600;
-      color: #000000;
+      color: ${props => (props.theme === 'dark' ? '#fff' : '#111')};
       text-align: left;
       > svg {
         transition: transform 250ms ease-out;
         transform: rotate(0deg);
       }
       &:hover {
-        background-color: #f1f1f1;
+        background-color: ${props =>
+          props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#f1f1f1'};
       }
       &[data-state='open'] {
-        background-color: #c5ffb9;
+        background-color: ${props =>
+          props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#c5ffb9'};
         > svg {
           transform: rotate(180deg);
         }
@@ -62,7 +65,8 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
           }
           &.draggable-handle {
             cursor: grab;
-            color: rgba(0, 0, 0, 0.5);
+            color: ${props =>
+              props.theme === 'dark' ? '#aaa' : 'rgba(0, 0, 0, 0.5)'};
             padding: 10px;
           }
         }
@@ -112,7 +116,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
   }
   .accordion-content {
     transition: background-color 0.05s ease;
-    background-color: #fff;
+    background-color: ${props => (props.theme === 'dark' ? '#252525' : '#fff')};
     overflow: hidden;
 
     &[data-state='open'] {

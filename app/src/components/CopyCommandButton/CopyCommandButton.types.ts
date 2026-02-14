@@ -4,4 +4,5 @@ export interface CopyCommandButtonProps {
   hidden?: boolean;
   type: 'command' | 'link';
   onClick?: () => void;
+  theme?: 'light' | 'dark';
 }
