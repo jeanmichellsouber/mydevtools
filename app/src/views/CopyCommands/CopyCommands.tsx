@@ -292,6 +292,7 @@ const CopyCommands = () => {
               onClick={() => {
                 setAdd_edit_dialog({ visible: true, upsert: 'add' });
               }}
+              title="Click to add a new group of commands at the end of the current list of groups."
             />
             <ManagementButton
               label={`Delete all groups (${commands_LS ? commands_LS?.length : 0})`}
@@ -301,6 +302,7 @@ const CopyCommands = () => {
                 setRemoveCommands_Dialog(true);
               }}
               disabled={!commands_LS || commands_LS.length === 0}
+              title="Click to delete all groups of commands at once."
             />
             <ManagementButton
               label="Import / Export"
@@ -309,6 +311,7 @@ const CopyCommands = () => {
               onClick={() => {
                 setImportExport_Dialog(true);
               }}
+              title="Click to import or export groups of commands. Data is in JSON format."
             />
           </div>
           <hr />

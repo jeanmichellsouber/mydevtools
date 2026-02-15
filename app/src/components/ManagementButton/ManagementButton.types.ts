@@ -4,4 +4,5 @@ export interface ManagementButtonProps {
   color: string;
   disabled?: boolean;
   onClick?: () => void;
+  title?: string;
 }

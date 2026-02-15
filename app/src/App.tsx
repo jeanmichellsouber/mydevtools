@@ -11,6 +11,9 @@ import { Slide } from 'react-toastify';
 import { GoSmiley } from 'react-icons/go';
 import { Main } from './components/Main';
 import { useApp } from './providers/AppProvider/AppProvider';
+import { HiOutlineCommandLine } from 'react-icons/hi2';
+import { AiOutlineDash } from 'react-icons/ai';
+import { CgDisplayFlex } from 'react-icons/cg';
 
 const App = () => {
   const { contextState } = useApp();
@@ -24,14 +27,20 @@ const App = () => {
           <nav>
             <ul>
               <li>
-                <NavLink to="/">Copy Commands</NavLink>
+                <NavLink to="/">
+                  <HiOutlineCommandLine /> Copy Commands
+                </NavLink>
               </li>
               <li>
-                <NavLink to="/slug-generator">Slug Generator</NavLink>
+                <NavLink to="/slug-generator">
+                  <AiOutlineDash /> Slug Generator
+                </NavLink>
               </li>
-              <li>
-                <NavLink to="/flexplanation">Flexplanation</NavLink>
-              </li>
+              {/* <li>
+                <NavLink to="/flexplanation">
+                  <CgDisplayFlex /> Flexplanation
+                </NavLink>
+              </li> */}
             </ul>
           </nav>
           <div>
@@ -68,7 +77,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<CopyCommands />} />
               <Route path="/slug-generator" element={<SlugGenerator />} />
-              <Route path="/flexplanation" element={<Flexplanation />} />
+              {/* <Route path="/flexplanation" element={<Flexplanation />} /> */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

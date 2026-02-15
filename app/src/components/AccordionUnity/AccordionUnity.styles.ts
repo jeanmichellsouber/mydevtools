@@ -75,7 +75,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
   }
   .context-menu {
     font-size: 14px;
-    background-color: #fff;
+    background-color: ${props => (props.theme === 'dark' ? '#111' : '#fff')};
     border-radius: 6px;
     padding: 10px;
     min-width: 200px;
@@ -91,13 +91,16 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    color: #444;
+    color: ${props => (props.theme === 'dark' ? '#fff' : '#111')};
     svg {
       font-size: 16px;
       color: inherit;
     }
     &:hover {
-      background-color: rgb(25, 95, 114);
+      background-color: ${props =>
+        props.theme === 'dark'
+          ? 'rgba(255, 255, 255, 0.1)'
+          : 'rgb(25, 95, 114)'};
       color: #fff;
     }
     &.delete {

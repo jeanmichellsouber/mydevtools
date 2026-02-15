@@ -25,17 +25,19 @@ export const StyledMain = styled.main`
       list-style: none;
       li {
         a {
+          display: flex;
+          align-items: center;
+          gap: 8px;
           color: ${props => (props.theme === 'dark' ? '#fff' : '#195f72')};
-          display: inline-block;
           padding: 5px 10px;
           transition: all 0.3s ease;
-          &:before {
+          /*&:before {
             content: '//';
             color: ${props =>
-              props.theme === 'dark' ? 'rgba(255, 255, 255, 0.5)' : '#195f72'};
+            props.theme === 'dark' ? 'rgba(255, 255, 255, 0.5)' : '#195f72'};
             opacity: 0.5;
             margin: 0 10px 0 0;
-          }
+          }*/
           &:hover {
             background: ${props =>
               props.theme === 'dark'

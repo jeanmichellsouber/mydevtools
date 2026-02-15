@@ -1,5 +1,6 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
 import type { CustomTooltipProps } from './CustomTooltip.types';
+import { useApp } from '@/providers/AppProvider/AppProvider';
 
 const CustomTooltip = ({
   children,
@@ -7,6 +8,7 @@ const CustomTooltip = ({
   side,
   maxWidth,
 }: CustomTooltipProps) => {
+  const { contextState } = useApp();
   return (
     <Tooltip.Provider delayDuration={0} disableHoverableContent>
       <Tooltip.Root>
@@ -16,7 +18,7 @@ const CustomTooltip = ({
             side={side || 'top'}
             sideOffset={5}
             style={{
-              background: 'linear-gradient(to right, #2d323a, #003e59)',
+              background: contextState.theme === 'dark' ? '#eee' : '#333',
               color: '#fff',
               padding: '4px 8px',
               borderRadius: '4px',
@@ -24,10 +26,15 @@ const CustomTooltip = ({
               maxWidth,
               textAlign: 'center',
               marginBottom: '-1px',
+              color: contextState.theme === 'dark' ? '#333' : '#eee',
             }}
           >
             {content}
-            <Tooltip.Arrow style={{ fill: '#003e59' }} />
+            <Tooltip.Arrow
+              style={{
+                fill: contextState.theme === 'dark' ? '#eee' : '#333',
+              }}
+            />
           </Tooltip.Content>
         </Tooltip.Portal>
       </Tooltip.Root>

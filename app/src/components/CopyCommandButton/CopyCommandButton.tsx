@@ -46,7 +46,11 @@ export const CopyCommandButton = ({
     >
       <div style={{ width: 'calc(100% - 20px)' }}>
         <div className="icon">{<PiLinkSimple />}</div>
-        <span style={{ borderBottom: 'solid 1px rgba(0,0,0,0.15)' }}>
+        <span
+          style={{
+            borderBottom: `1px dashed ${contextState.theme === 'dark' ? '#aaa' : '#111'}`,
+          }}
+        >
           {label}
         </span>
       </div>
