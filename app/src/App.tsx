@@ -1,7 +1,7 @@
 import { MainHeader } from './components/MainHeader';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import CopyCommands from './views/CopyCommands/CopyCommands';
-import Flexplanation from './views/Flexplanation/Flexplanation';
+// import Flexplanation from './views/Flexplanation/Flexplanation';
 import NotFound from './views/NotFound/NotFound';
 import SlugGenerator from './views/SlugGenerator/SlugGenerator';
 import CustomTooltip from './components/CustomTooltip/CustomTooltip';
@@ -13,7 +13,7 @@ import { Main } from './components/Main';
 import { useApp } from './providers/AppProvider/AppProvider';
 import { HiOutlineCommandLine } from 'react-icons/hi2';
 import { AiOutlineDash } from 'react-icons/ai';
-import { CgDisplayFlex } from 'react-icons/cg';
+// import { CgDisplayFlex } from 'react-icons/cg';
 
 const App = () => {
   const { contextState } = useApp();

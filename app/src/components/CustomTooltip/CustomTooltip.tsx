@@ -19,7 +19,6 @@ const CustomTooltip = ({
             sideOffset={5}
             style={{
               background: contextState.theme === 'dark' ? '#eee' : '#333',
-              color: '#fff',
               padding: '4px 8px',
               borderRadius: '4px',
               fontSize: '14px',
