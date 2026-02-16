@@ -1,0 +1,43 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  build-and-copy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Clone target repo
+        run: |
+          git clone https://x-access-token:${{ secrets.MY_DEV_TOOLS_SECRET }}@github.com/jeanmichellsouber/jeanmichellsouber.github.io target
+
+      - name: Copy dist files
+        run: |
+          rm -rf target/*
+          cp -r dist/* target/
+
+      - name: Commit and push
+        run: |
+          cd target
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Deploy from source repo" || echo "No changes"
+          git push
