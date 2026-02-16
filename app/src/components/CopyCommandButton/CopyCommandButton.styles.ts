@@ -1,5 +1,4 @@
-import css from 'node_modules/styled-components/native/dist/constructors/css';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type StyledProps = {
   theme: 'dark' | 'light';
