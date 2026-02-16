@@ -1,7 +1,12 @@
+import css from 'node_modules/styled-components/native/dist/constructors/css';
 import styled from 'styled-components';
 
-const styles = (props: { theme?: 'light' | 'dark' }) => `
-  background: ${props.theme === 'dark' ? '#252525' : '#fff'};
+type StyledProps = {
+  theme: 'dark' | 'light';
+};
+
+const styles = css<StyledProps>`
+  background: ${props => (props.theme === 'dark' ? '#252525' : '#fff')};
   height: 35px;
   display: flex;
   width: 100%;
@@ -34,13 +39,15 @@ const styles = (props: { theme?: 'light' | 'dark' }) => `
     display: block;
   }
   &:hover {
-    background: ${props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#f1f1f1'};
+    background: ${props =>
+      props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#f1f1f1'};
     .secondary-icon {
       display: flex;
     }
   }
   &:active {
-    background: ${props.theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#e8e8e8'};
+    background: ${props =>
+      props.theme === 'dark' ? 'rgba(255, 255, 255, 0.2)' : '#e8e8e8'};
   }
 
   .hint {
@@ -48,27 +55,27 @@ const styles = (props: { theme?: 'light' | 'dark' }) => `
     letter-spacing: 1px;
     text-transform: uppercase;
     display: block;
-    color: ${props.theme === 'dark' ? '#aaa' : 'rgba(0, 0, 0, 0.5)'};
+    color: ${props => (props.theme === 'dark' ? '#aaa' : 'rgba(0, 0, 0, 0.5)')};
     margin-bottom: -1px;
     // font-family: 'Courier New', serif !important;
   }
 
   span {
-    color: ${props.theme === 'dark' ? '#fff' : '#111'};
+    color: ${props => (props.theme === 'dark' ? '#fff' : '#111')};
     font-weight: 500;
     font-family: 'Courier New', serif !important;
     font-size: 14px;
     max-width: calc(100% - 45px);
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;    
+    text-overflow: ellipsis;
   }
 `;
 
-export const StyledCopyCommandButton = styled.button`
+export const StyledCopyCommandButton = styled.button<StyledProps>`
   ${styles}
 `;
 
-export const StyledCopyCommandLink = styled.a`
+export const StyledCopyCommandLink = styled.a<StyledProps>`
   ${styles}
 `;

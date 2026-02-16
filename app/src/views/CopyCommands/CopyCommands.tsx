@@ -106,7 +106,7 @@ const CopyCommands = () => {
   });
 
   const title = useWatch({ control, name: 'title' });
-  const listFields = useWatch({ control, name: 'list' });
+  // const listFields = useWatch({ control, name: 'list' });
 
   const onSubmit: SubmitHandler<CommandsValues> = data => {
     if (add_edit_dialog.upsert === 'edit') {
@@ -786,8 +786,10 @@ const CopyCommands = () => {
                               position: 'absolute',
                               zIndex: -1,
                             }}
-                            onClick={e => {
-                              e.target.value = null;
+                            onClick={(
+                              e: React.MouseEvent<HTMLInputElement>,
+                            ) => {
+                              e.currentTarget.value = '';
                             }}
                             onChange={e => {
                               const file = e.target.files?.[0];
