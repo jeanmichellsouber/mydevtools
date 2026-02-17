@@ -5,16 +5,16 @@ import { Theme } from '@radix-ui/themes/dist/cjs/components/index.js';
 import '@radix-ui/themes/styles.css';
 import './sass/index.scss';
 import './sass/customTheme.scss';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { AppProvider } from './providers/AppProvider/AppProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppProvider>
       <Theme accentColor="blue">
-        <BrowserRouter>
+        <HashRouter>
           <App />
-        </BrowserRouter>
+        </HashRouter>
       </Theme>
     </AppProvider>
   </StrictMode>,
