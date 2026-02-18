@@ -23,6 +23,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
   .accordion-header {
     margin: 0;
     position: sticky;
+    z-index: 1;
     top: 0;
     .accordion-trigger {
       display: flex;
@@ -45,11 +46,11 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
       }
       &:hover {
         background-color: ${props =>
-          props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#f1f1f1'};
+          props.theme === 'dark' ? '#333' : '#f1f1f1'};
       }
       &[data-state='open'] {
         background-color: ${props =>
-          props.theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : '#c5ffb9'};
+          props.theme === 'dark' ? '#333' : '#c5ffb9'};
         > svg {
           transform: rotate(180deg);
         }
@@ -98,9 +99,7 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
     }
     &:hover {
       background-color: ${props =>
-        props.theme === 'dark'
-          ? 'rgba(255, 255, 255, 0.1)'
-          : 'rgb(25, 95, 114)'};
+        props.theme === 'dark' ? '#333' : 'rgb(25, 95, 114)'};
       color: #fff;
     }
     &.delete {

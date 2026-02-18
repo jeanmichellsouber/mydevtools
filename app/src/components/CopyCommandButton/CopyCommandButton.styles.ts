@@ -17,6 +17,7 @@ const styles = css<StyledProps>`
   text-align: left;
   overflow: hidden;
   padding: 0 18px 0 0;
+  margin-bottom: 5px;
   & > div {
     display: flex;
     align-items: center;
