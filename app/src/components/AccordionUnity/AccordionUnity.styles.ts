@@ -23,7 +23,6 @@ export const StyledAccordionUnity = styled(Accordion.Item)`
   .accordion-header {
     margin: 0;
     position: sticky;
-    z-index: 1;
     top: 0;
     .accordion-trigger {
       display: flex;
