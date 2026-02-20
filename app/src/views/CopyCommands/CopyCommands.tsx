@@ -356,7 +356,7 @@ const CopyCommands = () => {
                         {group?.list?.map(
                           (item: CommandsValues['list'][number]) => (
                             <CopyCommandButton
-                              key={item.command + Date.now()}
+                              key={item.command + Date.now() + Math.random()}
                               label={item.command}
                               type={item.link ? 'link' : 'command'}
                               hint={item.hint}
