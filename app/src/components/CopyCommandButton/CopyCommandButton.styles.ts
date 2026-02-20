@@ -6,7 +6,7 @@ type StyledProps = {
 
 const styles = css<StyledProps>`
   background: ${props => (props.theme === 'dark' ? '#252525' : '#fff')};
-  height: 35px;
+  height: 40px;
   display: flex;
   width: 100%;
   align-items: center;
@@ -17,7 +17,7 @@ const styles = css<StyledProps>`
   text-align: left;
   overflow: hidden;
   padding: 0 18px 0 0;
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
   & > div {
     display: flex;
     align-items: center;
@@ -51,7 +51,7 @@ const styles = css<StyledProps>`
   }
 
   .hint {
-    font-size: 8px;
+    font-size: 9px;
     letter-spacing: 1px;
     text-transform: uppercase;
     display: block;
@@ -64,7 +64,7 @@ const styles = css<StyledProps>`
     color: ${props => (props.theme === 'dark' ? '#fff' : '#111')};
     font-weight: 500;
     font-family: 'Courier New', serif !important;
-    font-size: 14px;
+    font-size: 15px;
     max-width: calc(100% - 45px);
     white-space: nowrap;
     overflow: hidden;
