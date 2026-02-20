@@ -3,13 +3,12 @@ import { StyledCustomSelectbox } from './CustomSelectbox.styles';
 
 export const CustomSelectbox = ({ options, ...rest }: CustomSelectboxProps) => {
   return (
-    <StyledCustomSelectbox {...rest}>
+    <StyledCustomSelectbox
+      defaultValue={options.find(option => option.selected)?.value}
+      {...rest}
+    >
       {options.map(option => (
-        <option
-          key={option.value}
-          value={option.value}
-          selected={option.selected}
-        >
+        <option key={option.value} value={option.value}>
           {option.label}
         </option>
       ))}
