@@ -33,6 +33,6 @@ describe('CopyCommandButton', () => {
 
     // Assert that the link is rendered with the correct label and hint
     expect(getByText('https://example.com')).toBeInTheDocument();
-    expect(getByText('Visit the example jean')).toBeInTheDocument();
+    expect(getByText('Visit the example website')).toBeInTheDocument();
   });
 });
