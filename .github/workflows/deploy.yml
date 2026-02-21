@@ -20,11 +20,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: app
 
       - name: Build project
         run: npm run build
-        working-directory: app
 
       - name: Clone target repo
         run: |
@@ -33,7 +31,7 @@ jobs:
       - name: Copy dist files
         run: |
           rm -rf target/*
-          cp -r app/dist/* target/
+          cp -r dist/* target/
 
       - name: Commit and push
         run: |
