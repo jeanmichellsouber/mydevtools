@@ -6,16 +6,13 @@ import '@radix-ui/themes/styles.css';
 import './sass/index.scss';
 import './sass/customTheme.scss';
 import { HashRouter } from 'react-router-dom';
-import { AppProvider } from './providers/AppProvider/AppProvider.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AppProvider>
-      <Theme accentColor="blue">
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Theme>
-    </AppProvider>
+    <Theme accentColor="blue">
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </Theme>
   </StrictMode>,
 );

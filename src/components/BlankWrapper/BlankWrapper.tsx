@@ -1,11 +1,11 @@
-import { useApp } from '@/providers/AppProvider/AppProvider';
 import { StyledBlankWrapper } from './BlankWrapper.styles';
 import type { BlankWrapperProps } from './BlankWrapper.types';
+import { useThemeStore } from '@/stores/theme.store';
 
 export const BlankWrapper = ({ children, ...rest }: BlankWrapperProps) => {
-  const { contextState } = useApp();
+  const theme = useThemeStore(state => state.theme);
   return (
-    <StyledBlankWrapper theme={contextState.theme} {...rest}>
+    <StyledBlankWrapper theme={theme} {...rest}>
       {children}
     </StyledBlankWrapper>
   );
