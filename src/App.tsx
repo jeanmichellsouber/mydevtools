@@ -10,17 +10,16 @@ import { ToastContainer } from 'react-toastify/unstyled';
 import { Slide } from 'react-toastify';
 import { GoSmiley } from 'react-icons/go';
 import { Main } from './components/Main';
-import { useApp } from './providers/AppProvider/AppProvider';
 import { HiOutlineCommandLine } from 'react-icons/hi2';
 import { AiOutlineDash } from 'react-icons/ai';
+import { useThemeStore } from './stores/theme.store';
 // import { CgDisplayFlex } from 'react-icons/cg';
 
 const App = () => {
-  const { contextState } = useApp();
+  const theme = useThemeStore(state => state.theme);
+
   return (
-    <div
-      className={contextState.theme === 'dark' ? 'dark-theme' : 'light-theme'}
-    >
+    <div className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
       <MainHeader />
       <Main>
         <aside>

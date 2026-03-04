@@ -1,0 +1,29 @@
+// src/stores/theme.store.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+export type Theme = 'light' | 'dark';
+
+interface ThemeState {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
+}
+
+export const useThemeStore = create<ThemeState>()(
+  persist(
+    (set, get) => ({
+      theme: (localStorage.getItem('theme') as Theme) || 'light',
+
+      setTheme: theme => set({ theme }),
+
+      toggleTheme: () => {
+        const current = get().theme;
+        set({ theme: current === 'light' ? 'dark' : 'light' });
+      },
+    }),
+    {
+      name: 'theme',
+    },
+  ),
+);

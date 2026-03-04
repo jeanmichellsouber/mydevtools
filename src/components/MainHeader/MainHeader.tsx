@@ -1,12 +1,13 @@
-import { useApp } from '@/providers/AppProvider/AppProvider';
 import { CustomSelectbox } from '../CustomSelectbox';
 import { StyledMainHeader } from './MainHeader.styles';
 import MyDevToolsLogo from '@/assets/images/mydevtools.svg';
+import { Theme, useThemeStore } from '@/stores/theme.store';
 
 export const MainHeader = () => {
-  const { contextState, setContextState } = useApp();
+  const setTheme = useThemeStore(state => state.setTheme);
+  const theme = useThemeStore(state => state.theme);
   return (
-    <StyledMainHeader theme={contextState.theme}>
+    <StyledMainHeader theme={theme}>
       <div>
         <img src={MyDevToolsLogo} title="MY_DEV Tools" />
       </div>
@@ -16,19 +17,16 @@ export const MainHeader = () => {
             {
               label: 'Light mode 💡',
               value: 'light',
-              selected: contextState.theme === 'light',
+              selected: theme === 'light',
             },
             {
               label: 'Dark mode 🌙',
               value: 'dark',
-              selected: contextState.theme === 'dark',
+              selected: theme === 'dark',
             },
           ]}
           onChange={e => {
-            setContextState((prev: object) => ({
-              ...prev,
-              theme: e.target.value,
-            }));
+            setTheme(e.target.value as Theme);
           }}
         />
       </div>

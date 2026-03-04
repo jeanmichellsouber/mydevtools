@@ -1,8 +1,8 @@
 import type { MainProps } from './Main.types';
 import { StyledMain } from './Main.styles';
-import { useApp } from '@/providers/AppProvider/AppProvider';
+import { useThemeStore } from '@/stores/theme.store';
 
 export const Main = ({ children }: MainProps) => {
-  const { contextState } = useApp();
-  return <StyledMain theme={contextState.theme}>{children}</StyledMain>;
+  const theme = useThemeStore(state => state.theme);
+  return <StyledMain theme={theme}>{children}</StyledMain>;
 };

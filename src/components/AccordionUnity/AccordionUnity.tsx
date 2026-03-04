@@ -6,7 +6,8 @@ import { IoDuplicateOutline } from 'react-icons/io5';
 import { FiEdit3 } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { RiDraggable } from 'react-icons/ri';
-import { useApp } from '@/providers/AppProvider/AppProvider';
+
+import { useThemeStore } from '@/stores/theme.store';
 
 export const AccordionUnity = ({
   children,
@@ -17,9 +18,9 @@ export const AccordionUnity = ({
   duplicateFn,
   editSpecificFn,
 }: AccordionUnityProps) => {
-  const { contextState } = useApp();
+  const theme = useThemeStore(state => state.theme);
   return (
-    <StyledAccordionUnity value={value} theme={contextState.theme}>
+    <StyledAccordionUnity value={value} theme={theme}>
       <ContextMenu.Root>
         <ContextMenu.Trigger>
           <Accordion.Header
