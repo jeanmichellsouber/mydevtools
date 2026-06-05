@@ -1,20 +1,31 @@
 import { Button, Flex, Radio, Text, TextField } from '@radix-ui/themes';
 import { BlankWrapper } from '@/components/BlankWrapper';
 import { copyToClipboard, generateSlug } from '@/utils/utils';
-import { BsCopy } from 'react-icons/bs';
+import { BsCopy, BsTrash } from 'react-icons/bs';
 import { useState } from 'react';
 import CustomTooltip from '@/components/CustomTooltip/CustomTooltip';
 import { toast } from 'react-toastify/unstyled';
 import { Center } from '@/components/Center';
+import { Dialog } from '@/components/Dialog/Dialog';
+import { RiDeleteBin7Line } from 'react-icons/ri';
 
 const SlugGenerator = () => {
   const [inputText, setInputText] = useState<string>('');
   const [separator, setSeparator] = useState<string>('-');
+  const [listOfSlugs, setListOfSlugs] = useState<string[]>(() => {
+    const savedSlugs = localStorage.getItem('lastSlugs');
+    return savedSlugs ? JSON.parse(savedSlugs) : [];
+  });
+  const [removeSlugs_Dialog, setRemoveSlugs_Dialog] = useState(false);
 
   const invalidInput =
     !inputText || (inputText.trim().length === 0 && inputText.length > 0);
 
   const arrayOfPossibilities = ['-', '_', '/', '—', '.', '+'];
+
+  const saveListOfSlugToLocalStorage = (slugs: string[]) => {
+    localStorage.setItem('lastSlugs', JSON.stringify(slugs));
+  };
 
   return (
     <>
@@ -79,8 +90,15 @@ const SlugGenerator = () => {
               }}
               disabled={invalidInput}
               onClick={() => {
-                copyToClipboard(generateSlug(inputText, separator));
+                const newSlug = generateSlug(inputText, separator);
+                copyToClipboard(newSlug);
                 toast('Copied to clipboard!', { type: 'success' });
+                const filteredSlugs = listOfSlugs.filter(
+                  slug => slug !== newSlug,
+                );
+                const updatedSlugs = [newSlug, ...filteredSlugs];
+                setListOfSlugs(updatedSlugs);
+                saveListOfSlugToLocalStorage(updatedSlugs);
               }}
             >
               <span>
@@ -93,6 +111,89 @@ const SlugGenerator = () => {
           </CustomTooltip>
         </BlankWrapper>
       </Center>
+
+      {listOfSlugs.length > 0 && (
+        <Center>
+          <h1 className="gradientFont1">Last used slugs</h1>
+          <p>
+            Your last generated slugs will be stored here for easy access. Click
+            to copy to clipboard.
+          </p>
+
+          <BlankWrapper style={{ minHeight: 'auto' }}>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              {listOfSlugs.map((slug, index) => (
+                <li key={index} style={{ marginBottom: '10px' }}>
+                  <CustomTooltip content="Click to copy to your clipboard area">
+                    <Button
+                      size="3"
+                      variant="outline"
+                      color="gray"
+                      style={{
+                        width: '100%',
+                        minHeight: '45px',
+                      }}
+                      onClick={() => {
+                        copyToClipboard(slug);
+                        toast('Copied to clipboard!', { type: 'success' });
+                      }}
+                    >
+                      {slug} <BsCopy />
+                    </Button>
+                  </CustomTooltip>
+                </li>
+              ))}
+            </ul>
+            <Button
+              size="3"
+              variant="outline"
+              color="red"
+              style={{
+                width: '100%',
+                minHeight: '45px',
+              }}
+              onClick={() => {
+                setRemoveSlugs_Dialog(true);
+              }}
+            >
+              Clear history <BsTrash />
+            </Button>
+          </BlankWrapper>
+        </Center>
+      )}
+
+      <Dialog open={removeSlugs_Dialog}>
+        <h3 className="gradientFont1">Delete all slugs</h3>
+        <p>
+          Are you sure you want to delete all slugs? This action cannot be
+          undone.
+        </p>
+        <hr />
+        <div className="d-flex1" style={{ justifyContent: 'flex-end' }}>
+          <Button
+            size="2"
+            variant="solid"
+            color="red"
+            onClick={() => {
+              setListOfSlugs([]);
+              saveListOfSlugToLocalStorage([]);
+              setRemoveSlugs_Dialog(false);
+            }}
+          >
+            <RiDeleteBin7Line /> Yes, delete all
+          </Button>
+          <Button
+            size="2"
+            variant="outline"
+            color="gray"
+            onClick={() => {
+              setRemoveSlugs_Dialog(false);
+            }}
+          >
+            Cancel
+          </Button>
+        </div>
+      </Dialog>
     </>
   );
 };
